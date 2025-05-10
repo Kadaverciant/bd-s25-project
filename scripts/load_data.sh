@@ -1,4 +1,4 @@
-url="https://disk.yandex.ru/d/lDwhLw7wAAm6hA"
+url="https://disk.yandex.ru/d/PN9KHeXkarc0xA"
 
 wget "$(yadisk-direct $url)" -O data/data.zip
 
