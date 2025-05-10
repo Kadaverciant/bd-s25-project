@@ -1,0 +1,1 @@
+SELECT * FROM records LIMIT 10;

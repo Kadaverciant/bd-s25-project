@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS records (
     room_type varchar(50),
     accommodates integer,
     bathrooms numeric,
-    bedrooms integer,
-    beds integer,
+    bedrooms numeric, -- fix later
+    beds numeric, -- fix later
     bed_type varchar(30),
     price numeric,
     security_deposit numeric,
