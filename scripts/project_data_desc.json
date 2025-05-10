@@ -1,0 +1,114 @@
+{
+  "host_since": {
+    "desc": "date when the host started to rent out",
+    "format": "date string YYYY-DD-MM"
+  },
+  "host_response_time": {
+    "desc": "how frequently host replies on platform",
+    "format": "categorical string,  distinct"
+  },
+  "host_response_rate": {
+    "desc": "percent of host replies on platform",
+    "format": "percent data in format x%"
+  },
+  "host_is_superhost": {
+    "desc": "whether host has more than one apartment to rent out",
+    "format": "boolean, 't' or 'f'"
+  },
+  "host_has_profile_pic": {
+    "desc": "whether host has profile picture on platform",
+    "format": "boolean, 't' or 'f'"
+  },
+  "host_identity_verified": {
+    "desc": "whether host has verified identity on platform",
+    "format": "boolean, 't' or 'f'"
+  },
+  "neighbourhood": {
+    "desc": "neighbor district to rent apartment",
+    "format": "categorical string, 103 distinct"
+  },
+  "latitude": {
+    "desc": "latitude of rent apartment",
+    "format": "geospatial data, number"
+  },
+  "longitude": {
+    "desc": "longitude of rent apartment",
+    "format": "geospatial data, number"
+  },
+  "property_type": {
+    "desc": "type of rent apartment",
+    "format": "categorical string, 44 distinct"
+  },
+  "room_type": {
+    "desc": "room type of rent apartment",
+    "format": "categorical string, 4 distinct"
+  },
+  "accommodates": {
+    "desc": "how many people can live in rent apartment",
+    "format": "integer number"
+  },
+  "bathrooms": {
+    "desc": "number of bathrooms in rent apartment",
+    "format": "integer number"
+  },
+  "bedrooms": {
+    "desc": "number of bedrooms in rent apartment",
+    "format": "integer number"
+  },
+  "beds": {
+    "desc": "number of beds in rent apartment",
+    "format": "integer number"
+  },
+  "bed_type": {
+    "desc": "bed_type in rent apartment",
+    "format": "categorical string, 5 distinct"
+  },
+  "amenities": {
+    "desc": "additional services in rent apartment",
+    "format": "stringified set of strings"
+  },
+  "price": {
+    "desc": "daily price of rent apartment",
+    "format": "string in format $x.yy"
+  },
+  "security_deposit": {
+    "desc": "security deposit of rent apartment",
+    "format": "string in format $x.yy"
+  },
+  "cleaning_fee": {
+    "desc": "cleaning fee of rent apartment",
+    "format": "string in format $x.yy"
+  },
+  "guests_included": {
+    "desc": "number of possible guests in rent apartment",
+    "format": "integer number"
+  },
+  "extra_people": {
+    "desc": "price for each extra people in rent apartment",
+    "format": "string in format $x.yy"
+  },
+  "minimum_nights": {
+    "desc": "minimum possible number of nights to rent in a row",
+    "format": "integer number"
+  },
+  "maximum_nights": {
+    "desc": "maximum possible number of nights to rent in a row",
+    "format": "integer number"
+  },
+  "review_scores_rating": {
+    "desc": "how good is the apartment, target variable for project",
+    "format": "integer number from 0 to 100"
+  },
+  "instant_bookable": {
+    "desc": "whether apartment is instantly bookable",
+    "format": "boolean, 't' or 'f'"
+  },
+  "cancellation_policy": {
+    "desc": "cancellation policy of rent apartment",
+    "format": "categorical string, 6 distinct"
+  },
+  "require_guest_profile_picture": {
+    "desc": "whether rent requires guest profile picture on platform",
+    "format": "boolean, 't' or 'f'"
+  }
+}
