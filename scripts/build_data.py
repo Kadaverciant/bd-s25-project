@@ -47,7 +47,7 @@ for column in price_columns:
 
 int_columns = ['bedrooms', "beds"]
 for column in int_columns:
-    df[column] = df[column].apply(lambda x: int(x) if pd.notna(x) else x)
+    df[column] = df[column].astype('Int64')
 print("End preprocessing data")
 
 print("Start parsing attributes")
