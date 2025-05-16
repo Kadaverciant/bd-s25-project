@@ -9,3 +9,7 @@ CREATE EXTERNAL TABLE records STORED AS AVRO LOCATION 'project/warehouse/avro_sn
 TBLPROPERTIES ('avro.schema.url'='project/warehouse/avro_snappy/avsc/records.avsc');
 
 SELECT COUNT(*) FROM records;
+
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'records';
