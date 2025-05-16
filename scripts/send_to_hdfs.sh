@@ -45,7 +45,7 @@ sqoop import \
   --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
   --username team1\
   --password "$password" \
-  --compression-codec=snappy \
+  --compression-codec=bzip2 \
   --compress \
   --as-avrodatafile \
   --warehouse-dir=$WAREHOUSE_FOLDER \
