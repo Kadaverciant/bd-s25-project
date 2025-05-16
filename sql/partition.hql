@@ -8,7 +8,7 @@ USE team1_projectdb;
 DROP TABLE IF EXISTS records_part;
 
 CREATE EXTERNAL TABLE records_part (
-    host_since DATE,
+    host_since BIGINT,
     host_response_time STRING,
     host_response_rate INT,
     host_is_superhost BOOLEAN,
