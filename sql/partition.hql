@@ -35,7 +35,7 @@ create external table records_part (
     instant_bookable  BOOLEAN,
     cancellation_policy STRING,
     require_guest_profile_picture BOOLEAN,
-    month varchar(20),
+    month string,
     Kitchen BOOLEAN,
     Wifi BOOLEAN,
     Essentials BOOLEAN,
