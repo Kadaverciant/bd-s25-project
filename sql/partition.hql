@@ -7,7 +7,7 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS records_part;
 
-CREATE EXTERNAL TABLE records_part (
+create external table records_part (
     host_since BIGINT,
     host_response_time STRING,
     host_response_rate INT,
@@ -56,9 +56,9 @@ CREATE EXTERNAL TABLE records_part (
     `Buzzer/wireless intercom` BOOLEAN,
     Refrigerator BOOLEAN
 )
-PARTITIONED BY (month STRING)
-CLUSTERED BY (neighbourhood) INTO 4 BUCKETS
-STORED AS avro LOCATION 'project/hive/warehouse/records_part'
+partitioned by (month STRING)
+clustered by (neighbourhood) INTO 4 BUCKETS
+stored as avro LOCATION 'project/hive/warehouse/records_part'
 tblproperties ('AVRO.COMPRESS'='SNAPPY');
 
 SELECT * FROM records LIMIT 2;
