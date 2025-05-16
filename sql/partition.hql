@@ -111,6 +111,6 @@ SELECT
     Doorman,
     "Dishes and silverware",
     "Buzzer/wireless intercom",
-    Refrigerator
+    Refrigerator,
     month
 FROM records;
