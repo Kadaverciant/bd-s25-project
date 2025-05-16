@@ -5,9 +5,9 @@ SET hive.enforce.bucketing=true;
 
 USE team1_projectdb;
 
-DROP TABLE IF EXISTS records_partitioned_bucketed;
+DROP TABLE IF EXISTS records_part;
 
-CREATE EXTERNAL TABLE records_partitioned_bucketed (
+CREATE EXTERNAL TABLE records_part (
     host_since DATE,
     host_response_time STRING,
     host_response_rate INT,
@@ -60,5 +60,6 @@ PARTITIONED BY (month STRING)
 CLUSTERED BY (accommodates) INTO 4 BUCKETS
 STORED AS avro LOCATION 'project/hive/warehouse/records_part';
 
+SELECT * FROM records LIMIT 2;
 
-INSERT INTO records_partitioned_bucketed SELECT * FROM records;
+INSERT INTO records_part SELECT * FROM records;
