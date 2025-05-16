@@ -54,6 +54,7 @@ sqoop import \
   --as-avrodatafile \
   --warehouse-dir=$AVRO_SNAPPY_FOLDER \
   --m 1 \
+  --outdir /project/avsc \
   --table records
 
 end_time=$(date +%s)
