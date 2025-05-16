@@ -1,6 +1,6 @@
 password=$(head -n 1 secrets/.psql.pass)
 
-$PROJECT_FOLDER="/user/team1/project"
+$PROJECT_FOLDER="./project"
 $WAREHOUSE_FOLDER="$PROJECT_FOLDER/warehouse"
 
 # Check if the folder exists
