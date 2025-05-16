@@ -8,4 +8,4 @@ DROP TABLE IF EXISTS records;
 CREATE EXTERNAL TABLE records STORED AS AVRO LOCATION 'project/warehouse/arecords'
 TBLPROPERTIES ('avro.schema.url'='project/warehouse/avsc/records.avsc');
 
-SELECT COUNT(*) FROM records;
+EXPLAIN ANALYZE SELECT COUNT(*) FROM records;

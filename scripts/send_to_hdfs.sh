@@ -61,3 +61,5 @@ hdfs dfs -put -f outputs/*.avsc "$WAREHOUSE_FOLDER/avsc"
 
 echo "Sqoop import completed in $execution_time seconds"
 show_hdfs_size "$WAREHOUSE_FOLDER"
+
+beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p $password -f sql/craete_tables.hql
