@@ -63,4 +63,7 @@ sqoop import \
 end_time=$(date +%s)
 execution_time=$((end_time - start_time))
 
+hdfs dfs -mkdir -p "$AVRO_SNAPPY_FOLDER/avsc"
+hdfs dfs -put outputs/*.avsc "$AVRO_SNAPPY_FOLDER/avsc"
+
 echo "Sqoop import completed in $execution_time seconds"
