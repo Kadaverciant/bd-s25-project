@@ -1,3 +1,5 @@
+#!/bin/bash
+
 password=$(head -n 1 secrets/.psql.pass)
 
 rm -rf outputs
@@ -64,6 +66,6 @@ end_time=$(date +%s)
 execution_time=$((end_time - start_time))
 
 hdfs dfs -mkdir -p "$AVRO_SNAPPY_FOLDER/avsc"
-hdfs dfs -put outputs/*.avsc "$AVRO_SNAPPY_FOLDER/avsc"
+hdfs dfs -put -f outputs/*.avsc "$AVRO_SNAPPY_FOLDER/avsc"
 
 echo "Sqoop import completed in $execution_time seconds"

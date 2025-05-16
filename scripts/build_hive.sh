@@ -7,4 +7,4 @@ PARQUET_SNAPPY_FOLDER="$WAREHOUSE_FOLDER/parquet_snappy"
 AVRO_GZIP_FOLDER="$WAREHOUSE_FOLDER/avro_gzip"
 PARQUET_GZIP_FOLDER="$WAREHOUSE_FOLDER/parquet_gzip"
 
-hdfs dfs -rm -r /project/projectdata
+hive -f sql/craete_tables.hql
