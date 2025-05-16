@@ -45,6 +45,8 @@ sqoop import \
   --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
   --username team1\
   --password "$password" \
+  --compression-codec=bzip2 \
+  --compress \
   --as-parquetfile \
   --warehouse-dir=$WAREHOUSE_FOLDER \
   --m 1 \
