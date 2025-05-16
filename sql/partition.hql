@@ -57,8 +57,9 @@ CREATE EXTERNAL TABLE records_part (
     Refrigerator BOOLEAN
 )
 PARTITIONED BY (month STRING)
-CLUSTERED BY (host_response_rate) INTO 4 BUCKETS
-STORED AS avro LOCATION 'project/hive/warehouse/records_part';
+CLUSTERED BY (records_part.host_response_rate) INTO 4 BUCKETS
+STORED AS avro LOCATION 'project/hive/warehouse/records_part'
+tblproperties ('AVRO.COMPRESS'='SNAPPY');
 
 SELECT * FROM records LIMIT 2;
 
