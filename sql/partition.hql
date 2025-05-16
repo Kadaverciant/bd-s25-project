@@ -7,6 +7,8 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS records_part;
 
+SELECT * FROM records LIMIT 2;
+
 CREATE EXTERNAL TABLE records_part (
     host_since DATE,
     host_response_time STRING,
