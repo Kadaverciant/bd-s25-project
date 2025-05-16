@@ -6,7 +6,7 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS records;
 CREATE EXTERNAL TABLE records (
-    host_since date,
+    host_since BIGINT,
     host_response_time STRING,
     host_response_rate INT,
     host_is_superhost BOOLEAN,
