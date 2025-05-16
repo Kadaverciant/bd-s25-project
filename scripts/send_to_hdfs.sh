@@ -1,13 +1,22 @@
 password=$(head -n 1 secrets/.psql.pass)
 
-HDFS_PATH="/user/team1/project"
+$PROJECT_FOLDER="/user/team1/project"
+WAREHOUSE_FOLDER="$PROJECT_FOLDER/warehouse"
 
 # Check if the folder exists
-hdfs dfs -test -d "$HDFS_PATH"
+hdfs dfs -test -d "$PROJECT_FOLDER"
 
 # Check the exit status of the previous command
 if [ $? -eq 0 ]; then
-    echo "Folder $HDFS_PATH exists in HDFS"
+    echo "Project folder $PROJECT_FOLDER exists in HDFS. Start cleaning."
+    hdfs dfs -rm -rf "$PROJECT_FOLDER"
+    echo "Cleaned"
 else
-    echo "Folder $HDFS_PATH does not exist in HDFS"
+    echo "Folder $PROJECT_FOLDER does not exist in HDFS"
 fi
+
+echo "Creating project folder: $PROJECT_FOLDER"
+hdfs dfs -mkdir -p "$PROJECT_FOLDER"
+
+echo "Creating warehouse folder: $WAREHOUSE_FOLDER"
+hdfs dfs -mkdir -p "$WAREHOUSE_FOLDER"
