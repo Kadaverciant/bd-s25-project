@@ -42,23 +42,19 @@ CREATE EXTERNAL TABLE records (
     Washer BOOLEAN,
     Hangers BOOLEAN,
     Iron BOOLEAN,
-    `Laptop friendly workspace` BOOLEAN,
-    `Family/kid friendly` BOOLEAN,
-    `Hot water` BOOLEAN,
-    `Cable TV` BOOLEAN,
-    `Free parking on premises` BOOLEAN,
-    `Hair dryer` BOOLEAN,
-    `Smoking allowed` BOOLEAN,
+    a BOOLEAN,
+    b BOOLEAN,
+    c BOOLEAN,
+    d BOOLEAN,
+    e BOOLEAN,
+    f BOOLEAN,
+    g BOOLEAN,
     Doorman BOOLEAN,
-    `Dishes and silverware` BOOLEAN,
-    `Buzzer/wireless intercom` BOOLEAN,
-    Refrigerator BOOLEAN
+    h BOOLEAN,
+    j BOOLEAN,
+    k BOOLEAN
 )
-STORED AS PARQUET LOCATION 'project/warehouse/records'
-TBLPROPERTIES (
-    'parquet.compression'='SNAPPY',
-    'parquet.enable.dictionary'='true'
-);
+STORED AS PARQUET LOCATION 'project/warehouse/records';
 
 EXPLAIN ANALYZE SELECT COUNT(*) FROM records;
 SELECT COUNT(*) FROM records;
