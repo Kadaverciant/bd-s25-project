@@ -11,3 +11,5 @@ TBLPROPERTIES ('avro.schema.url'='project/warehouse/avro_snappy/avsc/records.avs
 SELECT COUNT(*) FROM records;
 
 DESCRIBE FORMATTED records;
+
+SELECT * FROM records limit 5;
