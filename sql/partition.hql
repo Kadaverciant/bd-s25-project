@@ -46,7 +46,7 @@ CREATE EXTERNAL TABLE records_part (
     laptop_friendly_workspace BOOLEAN,
     family_kid_friendly BOOLEAN,
     hot_water BOOLEAN,
-    cable_TV BOOLEAN,
+    cable_tv BOOLEAN,
     free_parking_on_premises BOOLEAN,
     hair_dryer BOOLEAN,
     smoking_allowed BOOLEAN,
@@ -58,8 +58,7 @@ CREATE EXTERNAL TABLE records_part (
 PARTITIONED BY (month STRING)
 CLUSTERED BY (neighbourhood) INTO 4 BUCKETS
 STORED AS AVRO
-LOCATION 'project/hive/warehouse/records_part'
-TBLPROPERTIES ('AVRO.COMPRESS'='SNAPPY');
+LOCATION 'project/hive/warehouse/records_part';
 
 SELECT * FROM records LIMIT 2;
 
@@ -92,25 +91,25 @@ SELECT
     instant_bookable,
     cancellation_policy,
     require_guest_profile_picture,
-    Kitchen,
-    Wifi,
-    Essentials,
-    TV,
-    "Air conditioning",
-    Elevator,
-    Washer,
-    Hangers,
-    Iron,
-    "Laptop friendly workspace",
-    "Family/kid friendly",
-    "Hot water",
-    "Cable TV",
-    "Free parking on premises",
-    "Hair dryer",
-    "Smoking allowed",
-    Doorman,
-    "Dishes and silverware",
-    "Buzzer/wireless intercom",
-    Refrigerator,
+    kitchen,
+    wifi,
+    essentials,
+    tv,
+    air_conditioning,
+    elevator,
+    washer,
+    hangers,
+    iron,
+    laptop_friendly_workspace,
+    family_kid_friendly,
+    hot_water,
+    cable_tv,
+    free_parking_on_premises,
+    hair_dryer,
+    smoking_allowed,
+    doorman,
+    dishes_and_silverware,
+    buzzer_wireless_intercom,
+    refrigerator,
     month
 FROM records;
