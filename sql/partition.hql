@@ -7,8 +7,6 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS records_part;
 
-SELECT * FROM records LIMIT 2;
-
 CREATE EXTERNAL TABLE records_part (
     host_since DATE,
     host_response_time STRING,
@@ -59,7 +57,7 @@ CREATE EXTERNAL TABLE records_part (
     Refrigerator BOOLEAN
 )
 PARTITIONED BY (month STRING)
-CLUSTERED BY (accommodates) INTO 4 BUCKETS
+CLUSTERED BY (host_response_rate) INTO 4 BUCKETS
 STORED AS avro LOCATION 'project/hive/warehouse/records_part';
 
 SELECT * FROM records LIMIT 2;
