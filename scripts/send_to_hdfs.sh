@@ -47,7 +47,13 @@ hdfs dfs -chmod 755 "$PARQUET_GZIP_FOLDER"
 
 echo "Folder structure created successfully"
 
-start_time=$(date +%s)
+show_hdfs_size() {
+    local folder=$1
+    echo -n "Size of $folder: "
+    hdfs dfs -du -h "$folder" | awk '{print $1$2}'
+}
+
+start_time_AVRO_SNAPPY=$(date +%s)
 
 echo "Start loading AVRO + SNAPPY"
 sqoop import \
@@ -62,10 +68,11 @@ sqoop import \
   --outdir "$(pwd)/outputs" \
   --table records
 
-end_time=$(date +%s)
-execution_time=$((end_time - start_time))
+end_time_AVRO_SNAPPY=$(date +%s)
+execution_time_AVRO_SNAPPY=$((end_time_AVRO_SNAPPY - start_time_AVRO_SNAPPY))
 
 hdfs dfs -mkdir -p "$AVRO_SNAPPY_FOLDER/avsc"
 hdfs dfs -put -f outputs/*.avsc "$AVRO_SNAPPY_FOLDER/avsc"
 
-echo "Sqoop import completed in $execution_time seconds"
+echo "AVRO_SNAPPY import completed in execution_time_AVRO_SNAPPY seconds"
+show_hdfs_size "$AVRO_SNAPPY_FOLDER"
