@@ -1,7 +1,7 @@
 password=$(head -n 1 secrets/.psql.pass)
 
 rm -rf outputs
-mkdir outputs
+mkdir -p outputs
 
 PROJECT_FOLDER="/user/team1/project"
 WAREHOUSE_FOLDER="$PROJECT_FOLDER/warehouse"
@@ -57,7 +57,7 @@ sqoop import \
   --as-avrodatafile \
   --warehouse-dir=$AVRO_SNAPPY_FOLDER \
   --m 1 \
-  --outdir /outputs \
+  --outdir "$(pwd)/outputs" \
   --table records
 
 end_time=$(date +%s)
