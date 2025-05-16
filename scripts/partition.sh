@@ -2,7 +2,6 @@
 
 PROJECT_FOLDER="/user/team1/project"
 WAREHOUSE_FOLDER="$PROJECT_FOLDER/warehouse"
-PARQUET_SNAPPY_FOLDER="$WAREHOUSE_FOLDER/parquet_snappy"
 
 password=$(head -n 1 secrets/.psql.pass)
 
