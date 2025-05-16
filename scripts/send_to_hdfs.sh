@@ -65,6 +65,9 @@ sqoop import \
 end_time=$(date +%s)
 execution_time=$((end_time - start_time))
 
+AVSC_FILE="outputs/records.avsc"
+sed -i 's/"name" : "host_since",[[:space:]]*"type" : "long"/"name" : "host_since", "type" : { "type": "int", "logicalType": "date" }/g' "$AVSC_FILE"
+
 hdfs dfs -mkdir -p "$AVRO_SNAPPY_FOLDER/avsc"
 hdfs dfs -put -f outputs/*.avsc "$AVRO_SNAPPY_FOLDER/avsc"
 
