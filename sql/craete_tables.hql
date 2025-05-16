@@ -10,6 +10,4 @@ TBLPROPERTIES ('avro.schema.url'='project/warehouse/avro_snappy/avsc/records.avs
 
 SELECT COUNT(*) FROM records;
 
-SELECT COLUMN_NAME, DATA_TYPE
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME = 'records';
+DESCRIBE FORMATTED records;
