@@ -47,7 +47,7 @@ sqoop import \
   --password "$password" \
   --compression-codec=bzip2 \
   --compress \
-  --as-avrodatafile \
+  --as-parquetfile \
   --warehouse-dir=$WAREHOUSE_FOLDER \
   --m 1 \
   --outdir "$(pwd)/outputs" \
@@ -56,8 +56,8 @@ sqoop import \
 end_time=$(date +%s)
 execution_time=$((end_time - start_time))
 
-hdfs dfs -mkdir -p "$WAREHOUSE_FOLDER/avsc"
-hdfs dfs -put -f outputs/*.avsc "$WAREHOUSE_FOLDER/avsc"
+#hdfs dfs -mkdir -p "$WAREHOUSE_FOLDER/avsc"
+#hdfs dfs -put -f outputs/*.avsc "$WAREHOUSE_FOLDER/avsc"
 
 echo "Sqoop import completed in $execution_time seconds"
 show_hdfs_size "$WAREHOUSE_FOLDER"
