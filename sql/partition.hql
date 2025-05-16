@@ -2,64 +2,64 @@ SET hive.exec.dynamic.partition = true;
 SET hive.exec.dynamic.partition.mode = nonstrict;
 SET hive.enforce.bucketing=true;
 
-
 USE team1_projectdb;
 
 DROP TABLE IF EXISTS records_part;
 
-create external table records_part (
+CREATE EXTERNAL TABLE records_part (
     host_since BIGINT,
-    host_response_time varchar(200),
+    host_response_time STRING,
     host_response_rate INT,
     host_is_superhost BOOLEAN,
-    host_has_profile_pic  BOOLEAN,
+    host_has_profile_pic BOOLEAN,
     host_identity_verified BOOLEAN,
-    neighbourhood varchar(200),
-    latitude decimal(10,2),
-    longitude decimal(10,2),
-    property_type varchar(200),
-    room_type varchar(200),
+    neighbourhood STRING,
+    latitude FLOAT,
+    longitude FLOAT,
+    property_type STRING,
+    room_type STRING,
     accommodates INT,
-    bathrooms decimal(10,2),
+    bathrooms FLOAT,
     bedrooms INT,
     beds INT,
-    bed_type varchar(200),
-    price decimal(10,2),
-    security_deposit decimal(10,2),
-    cleaning_fee decimal(10,2),
+    bed_type STRING,
+    price FLOAT,
+    security_deposit FLOAT,
+    cleaning_fee FLOAT,
     guests_included INT,
-    extra_people decimal(10,2),
+    extra_people FLOAT,
     minimum_nights INT,
     maximum_nights INT,
-    review_scores_rating decimal(10,2),
-    instant_bookable  BOOLEAN,
-    cancellation_policy varchar(200),
+    review_scores_rating FLOAT,
+    instant_bookable BOOLEAN,
+    cancellation_policy STRING,
     require_guest_profile_picture BOOLEAN,
     Kitchen BOOLEAN,
     Wifi BOOLEAN,
     Essentials BOOLEAN,
     TV BOOLEAN,
-    `Air conditioning` BOOLEAN,
+    air_conditioning BOOLEAN,
     Elevator BOOLEAN,
     Washer BOOLEAN,
     Hangers BOOLEAN,
     Iron BOOLEAN,
-    `Laptop friendly workspace` BOOLEAN,
-    `Family/kid friendly` BOOLEAN,
-    `Hot water` BOOLEAN,
-    `Cable TV` BOOLEAN,
-    `Free parking on premises` BOOLEAN,
-    `Hair dryer` BOOLEAN,
-    `Smoking allowed` BOOLEAN,
+    Laptop_friendly_workspace BOOLEAN,
+    Family_kid_friendly BOOLEAN,
+    Hot_water BOOLEAN,
+    Cable_TV BOOLEAN,
+    Free_parking_on_premises BOOLEAN,
+    Hair_dryer BOOLEAN,
+    Smoking_allowed BOOLEAN,
     Doorman BOOLEAN,
-    `Dishes and silverware` BOOLEAN,
-    `Buzzer/wireless intercom` BOOLEAN,
+    Dishes_and_silverware BOOLEAN,
+    Buzzer_wireless_intercom BOOLEAN,
     Refrigerator BOOLEAN
 )
-partitioned by (month varchar(200))
-clustered by (neighbourhood) INTO 4 BUCKETS
-stored as avro LOCATION 'project/hive/warehouse/records_part'
-tblproperties ('AVRO.COMPRESS'='SNAPPY');
+PARTITIONED BY (month STRING)
+CLUSTERED BY (neighbourhood) INTO 4 BUCKETS
+STORED AS AVRO
+LOCATION 'project/hive/warehouse/records_part'
+TBLPROPERTIES ('AVRO.COMPRESS'='SNAPPY');
 
 SELECT * FROM records LIMIT 2;
 
