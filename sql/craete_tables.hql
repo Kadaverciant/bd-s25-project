@@ -6,6 +6,6 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS records;
 CREATE EXTERNAL TABLE records STORED AS PARQUET LOCATION 'project/warehouse/records'
-TBLPROPERTIES ('parquet.schema.respect'='true');
+TBLPROPERTIES ('parquet.enable.dictionary'='true');
 
 EXPLAIN ANALYZE SELECT COUNT(*) FROM records;
