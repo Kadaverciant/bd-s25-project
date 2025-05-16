@@ -58,3 +58,4 @@ STORED AS PARQUET LOCATION 'project/warehouse/records';
 
 EXPLAIN ANALYZE SELECT COUNT(*) FROM records;
 SELECT COUNT(*) FROM records;
+SELECT * FROM records;
