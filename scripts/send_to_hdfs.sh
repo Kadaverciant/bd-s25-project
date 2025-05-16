@@ -18,5 +18,7 @@ fi
 echo "Creating project folder: $PROJECT_FOLDER"
 hdfs dfs -mkdir -p "$PROJECT_FOLDER"
 
+hdfs dfs -chmod -R 755 "$PROJECT_FOLDER"
+
 echo "Creating warehouse folder: $WAREHOUSE_FOLDER"
 hdfs dfs -mkdir -p "$WAREHOUSE_FOLDER"
