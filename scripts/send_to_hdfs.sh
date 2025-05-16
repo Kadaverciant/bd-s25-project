@@ -50,7 +50,7 @@ echo "Folder structure created successfully"
 show_hdfs_size() {
     local folder=$1
     echo -n "Size of $folder: "
-    hdfs dfs -du -h "$folder" | awk '{print $1$2}'
+    hdfs dfs -du -h "$folder" | awk '{print $1}'
 }
 
 start_time_AVRO_SNAPPY=$(date +%s)
