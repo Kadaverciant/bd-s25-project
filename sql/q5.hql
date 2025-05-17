@@ -1,21 +1,18 @@
 USE team1_projectdb;
 
+DROP TABLE IF EXISTS q5_results;
+
+CREATE TABLE q5_results AS
 WITH base AS (
   SELECT
     price,
     COALESCE(cleaning_fee, 0) AS cleaning_fee,
     price + COALESCE(cleaning_fee, 0) AS total_price,
     review_scores_rating,
-    CASE WHEN COALESCE(cleaning_fee, 0) = 0
-         THEN 'all_in_price'
-         ELSE 'split_cleaning_fee'
-    END AS strategy
+    CASE WHEN COALESCE(cleaning_fee, 0) = 0 THEN 'all_in_price' ELSE 'split_cleaning_fee' END AS strategy
   FROM records_part
   WHERE review_scores_rating IS NOT NULL
---     AND price + COALESCE(cleaning_fee, 0) BETWEEN 30 AND 1000  -- фильтруем экстремумы
 ),
-
--- добавляем номер сегмента 1..20, равномерно по числу строк
 bucketed AS (
   SELECT
     price,
@@ -26,8 +23,6 @@ bucketed AS (
     ntile(20) OVER (ORDER BY total_price) AS bucket_num
   FROM base
 )
-
--- итоговый отчёт
 SELECT
   bucket_num,
   ROUND(MIN(total_price), 2) AS bucket_min_price,

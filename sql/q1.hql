@@ -1,5 +1,8 @@
 USE team1_projectdb;
--- Most costly neighborhood
+
+DROP TABLE IF EXISTS q1_results;
+
+CREATE TABLE q1_results AS
 SELECT
     r.neighbourhood,
     ROUND(AVG(r.price), 2) AS avg_price,
@@ -11,19 +14,11 @@ SELECT
     ROUND(AVG(CASE WHEN r.host_is_superhost THEN 1.0 ELSE 0.0 END) * 100, 2) AS superhost_percentage,
     ROUND(AVG(CASE WHEN r.room_type = 'Entire home/apt' THEN 1.0 ELSE 0.0 END) * 100, 2) AS entire_home_ratio,
     COUNT(*) AS listings_count
-FROM
-    records_part r
+FROM records_part r
 WHERE
     r.month IN ('september', 'october', 'november', 'december', 'january', 'february', 'march', 'april', 'may')
     AND r.price > 10
     AND r.price IS NOT NULL
     AND r.neighbourhood IS NOT NULL
-GROUP BY
-    r.neighbourhood
-HAVING
-    AVG(r.review_scores_rating) >= 80
-    AND COUNT(*) >= 10
-ORDER BY
-    avg_price DESC
-LIMIT 20;
-
+GROUP BY r.neighbourhood
+HAVING AVG(r.review_scores_rating) >= 80 AND COUNT(*) >= 10;

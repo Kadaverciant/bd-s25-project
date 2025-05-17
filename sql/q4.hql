@@ -1,5 +1,8 @@
 USE team1_projectdb;
 
+DROP TABLE IF EXISTS q4_results;
+
+CREATE TABLE q4_results AS
 SELECT
   month,
   property_type,
