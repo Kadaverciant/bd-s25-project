@@ -9,9 +9,9 @@ WITH base AS (
     CASE WHEN COALESCE(cleaning_fee, 0) = 0 THEN 'all_in_price' ELSE 'split_cleaning_fee' END AS strategy
   FROM records_part
   WHERE review_scores_rating IS NOT NULL
+    AND price + COALESCE(cleaning_fee, 0) BETWEEN 10 AND 10000  -- Убираем выбросы
 ),
 
--- найдём границы
 limits AS (
   SELECT
     MIN(total_price) AS min_price,
@@ -19,20 +19,18 @@ limits AS (
   FROM base
 ),
 
--- добавим bucket (0..19) по нормализации
 bucketed AS (
   SELECT
     b.*,
     l.min_price,
     l.max_price,
     CAST(FLOOR(
-      20 * (total_price - l.min_price) / (l.max_price - l.min_price)
+      20 * (total_price - l.min_price) / NULLIF(l.max_price - l.min_price, 0)
     ) AS INT) AS bucket_num
   FROM base b
   CROSS JOIN limits l
 )
 
--- финальный вывод: сравниваем внутри каждого из 20 сегментов
 SELECT
   bucket_num,
   ROUND(MIN(total_price), 2) AS bucket_min_price,
