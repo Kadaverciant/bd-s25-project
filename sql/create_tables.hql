@@ -33,32 +33,30 @@ CREATE EXTERNAL TABLE records (
     instant_bookable BOOLEAN,
     cancellation_policy STRING,
     require_guest_profile_picture BOOLEAN,
-    Kitchen BOOLEAN,
-    Wifi BOOLEAN,
-    Essentials BOOLEAN,
-    TV BOOLEAN,
-    Air_conditioning BOOLEAN,
-    Elevator BOOLEAN,
-    Washer BOOLEAN,
-    Hangers BOOLEAN,
-    Iron BOOLEAN,
-    `Laptop friendly workspace` BOOLEAN,
-    `Family/kid friendly` BOOLEAN,
-    `Hot water` BOOLEAN,
-    `Cable TV` BOOLEAN,
-    `Free parking on premises` BOOLEAN,
-    `Hair dryer` BOOLEAN,
-    `Smoking allowed` BOOLEAN,
-    Doorman BOOLEAN,
-    `Dishes and silverware` BOOLEAN,
-    `Buzzer/wireless intercom` BOOLEAN,
-    Refrigerator BOOLEAN
+    month STRING,
+    kitchen BOOLEAN,
+    wifi BOOLEAN,
+    essentials BOOLEAN,
+    tv BOOLEAN,
+    air_conditioning BOOLEAN,
+    elevator BOOLEAN,
+    washer BOOLEAN,
+    hangers BOOLEAN,
+    iron BOOLEAN,
+    laptop_friendly_workspace BOOLEAN,
+    family_kid_friendly BOOLEAN,
+    hot_water BOOLEAN,
+    cable_tv BOOLEAN,
+    free_parking_on_premises BOOLEAN,
+    hair_dryer BOOLEAN,
+    smoking_allowed BOOLEAN,
+    doorman BOOLEAN,
+    dishes_and_silverware BOOLEAN,
+    buzzer_wireless_intercom BOOLEAN,
+    refrigerator BOOLEAN
 )
-STORED AS PARQUET LOCATION 'project/warehouse/records'
-TBLPROPERTIES (
-    'parquet.compression'='SNAPPY',
-    'parquet.enable.dictionary'='true'
-);
+STORED AS PARQUET LOCATION 'project/warehouse/records';
 
 EXPLAIN ANALYZE SELECT COUNT(*) FROM records;
 SELECT COUNT(*) FROM records;
+SELECT * FROM records LIMIT 10;

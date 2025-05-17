@@ -60,4 +60,4 @@ execution_time=$((end_time - start_time))
 echo "Sqoop import completed in $execution_time seconds"
 show_hdfs_size "$WAREHOUSE_FOLDER"
 
-beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p $password -f sql/craete_tables.hql
+beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p $password -f sql/create_tables.hql
