@@ -1,3 +1,5 @@
+USE records_part;
+
 SELECT
     r.neighbourhood,
     ROUND(AVG(r.price), 2) AS avg_price,

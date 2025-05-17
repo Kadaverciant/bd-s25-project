@@ -1,3 +1,5 @@
+USE records_part;
+
 WITH amenities_stats AS (
     SELECT
         r.room_type,
