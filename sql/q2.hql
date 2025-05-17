@@ -1,5 +1,5 @@
 USE team1_projectdb;
-
+-- How amenities affect on price
 WITH amenities_stats AS (
     SELECT
         r.room_type,

@@ -1,5 +1,5 @@
 USE team1_projectdb;
-
+-- Correlation of deposit and rating
 SELECT
     deposit_category,
     AVG(review_scores_rating) AS avg_rating,
@@ -20,3 +20,6 @@ FROM (
 ) AS subquery
 GROUP BY
     deposit_category;
+
+
+-- Корреляция хоста

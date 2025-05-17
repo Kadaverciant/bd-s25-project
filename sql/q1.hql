@@ -1,5 +1,5 @@
 USE team1_projectdb;
-
+-- Most costly neighborhood
 SELECT
     r.neighbourhood,
     ROUND(AVG(r.price), 2) AS avg_price,
@@ -22,7 +22,8 @@ GROUP BY
     r.neighbourhood
 HAVING
     AVG(r.review_scores_rating) >= 80
-    AND COUNT(*) >= 10  -- Added to ensure meaningful statistics for each neighborhood
+    AND COUNT(*) >= 10
 ORDER BY
     avg_price DESC
 LIMIT 20;
+
