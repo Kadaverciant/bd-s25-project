@@ -6,31 +6,28 @@ WITH base AS (
     COALESCE(cleaning_fee, 0) AS cleaning_fee,
     price + COALESCE(cleaning_fee, 0) AS total_price,
     review_scores_rating,
-    CASE WHEN COALESCE(cleaning_fee, 0) = 0 THEN 'all_in_price' ELSE 'split_cleaning_fee' END AS strategy
+    CASE WHEN COALESCE(cleaning_fee, 0) = 0
+         THEN 'all_in_price'
+         ELSE 'split_cleaning_fee'
+    END AS strategy
   FROM records_part
   WHERE review_scores_rating IS NOT NULL
-    AND price + COALESCE(cleaning_fee, 0) BETWEEN 10 AND 10000  -- Убираем выбросы
+    AND price + COALESCE(cleaning_fee, 0) BETWEEN 30 AND 1000  -- фильтруем экстремумы
 ),
 
-limits AS (
-  SELECT
-    MIN(total_price) AS min_price,
-    MAX(total_price) AS max_price
-  FROM base
-),
-
+-- добавляем номер сегмента 1..20, равномерно по числу строк
 bucketed AS (
   SELECT
-    b.*,
-    l.min_price,
-    l.max_price,
-    CAST(FLOOR(
-      20 * (total_price - l.min_price) / NULLIF(l.max_price - l.min_price, 0)
-    ) AS INT) AS bucket_num
-  FROM base b
-  CROSS JOIN limits l
+    price,
+    cleaning_fee,
+    total_price,
+    review_scores_rating,
+    strategy,
+    ntile(20) OVER (ORDER BY total_price) AS bucket_num
+  FROM base
 )
 
+-- итоговый отчёт
 SELECT
   bucket_num,
   ROUND(MIN(total_price), 2) AS bucket_min_price,
