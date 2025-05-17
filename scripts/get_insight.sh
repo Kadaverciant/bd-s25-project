@@ -23,11 +23,12 @@ beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password"
 echo "Fifth insight"
 beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q5.hql
 
+hadoop fs -mkdir -p /user/team1/project/output
 
 for i in {1..5}; do
   echo "Export table q${i}_results into CSV..."
 
-  hive -e "
+  beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -e "
   INSERT OVERWRITE DIRECTORY '/user/team1/project/output/q${i}.csv'
   ROW FORMAT DELIMITED
   FIELDS TERMINATED BY ','
