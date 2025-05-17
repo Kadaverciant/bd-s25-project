@@ -18,5 +18,9 @@ password=$(head -n 1 secrets/.psql.pass)
 #beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q3.hql
 
 #q4 insight
-echo "Fourth insight"
-beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q4.hql
+#echo "Fourth insight"
+#beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q4.hql
+
+#q5 insight
+echo "Fifth insight"
+beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q5.hql
