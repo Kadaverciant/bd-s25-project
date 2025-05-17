@@ -1,20 +1,45 @@
 USE team1_projectdb;
 
-
-SELECT
-  total,
-  CASE WHEN cleaning_fee = 0 THEN 'all_in_price' ELSE 'split' END AS strat,
-  ROUND(AVG(review_scores_rating), 2) AS avg_rating,
-  COUNT(*) AS cnt
-FROM (
+WITH base AS (
   SELECT
     price,
-    cleaning_fee,
-    price + COALESCE(cleaning_fee, 0) AS total,
-    review_scores_rating
+    COALESCE(cleaning_fee, 0) AS cleaning_fee,
+    price + COALESCE(cleaning_fee, 0) AS total_price,
+    review_scores_rating,
+    CASE WHEN COALESCE(cleaning_fee, 0) = 0 THEN 'all_in_price' ELSE 'split_cleaning_fee' END AS strategy
   FROM records_part
   WHERE review_scores_rating IS NOT NULL
-) t
-WHERE total BETWEEN 500 AND 1500 -- диапазон итоговой цены
-GROUP BY total, strat
-ORDER BY total, strat;
+),
+
+-- найдём границы
+limits AS (
+  SELECT
+    MIN(total_price) AS min_price,
+    MAX(total_price) AS max_price
+  FROM base
+),
+
+-- добавим bucket (0..19) по нормализации
+bucketed AS (
+  SELECT
+    b.*,
+    l.min_price,
+    l.max_price,
+    CAST(FLOOR(
+      20 * (total_price - l.min_price) / (l.max_price - l.min_price)
+    ) AS INT) AS bucket_num
+  FROM base b
+  CROSS JOIN limits l
+)
+
+-- финальный вывод: сравниваем внутри каждого из 20 сегментов
+SELECT
+  bucket_num,
+  ROUND(MIN(total_price), 2) AS bucket_min_price,
+  ROUND(MAX(total_price), 2) AS bucket_max_price,
+  strategy,
+  COUNT(*) AS count_listings,
+  ROUND(AVG(review_scores_rating), 2) AS avg_rating
+FROM bucketed
+GROUP BY bucket_num, strategy
+ORDER BY bucket_num, strategy;
