@@ -10,6 +10,11 @@ SELECT
 FROM records_part
 WHERE review_scores_rating IS NOT NULL
   AND price IS NOT NULL
+  AND price IS NOT NULL
+  AND host_has_profile_pic IS NOT NULL
+  AND host_is_superhost IS NOT NULL
+  AND host_identity_verified IS NOT NULL
+
 GROUP BY
   host_has_profile_pic,
   host_is_superhost,
