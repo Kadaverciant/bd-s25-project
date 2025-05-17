@@ -1,4 +1,4 @@
-USE records_part;
+USE records;
 
 SELECT
     r.neighbourhood,
