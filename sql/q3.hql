@@ -1,25 +1,17 @@
 USE team1_projectdb;
--- Correlation of deposit and rating
+
 SELECT
-    deposit_category,
-    AVG(review_scores_rating) AS avg_rating,
-    AVG(price) AS avg_price
-FROM (
-    SELECT
-        CASE
-            WHEN security_deposit = 0 THEN 'no_deposit'
-            WHEN security_deposit <= 100 THEN 'small_deposit'
-            ELSE 'large_deposit'
-        END AS deposit_category,
-        review_scores_rating,
-        price
-    FROM
-        records_part
-    WHERE
-        security_deposit IS NOT NULL
-) AS subquery
+  host_has_profile_pic,
+  host_is_superhost,
+  host_identity_verified,
+  ROUND(AVG(review_scores_rating), 2) AS avg_rating,
+  ROUND(AVG(price), 2) AS avg_price,
+  COUNT(*) AS listings_count
+FROM records_part
+WHERE review_scores_rating IS NOT NULL
+  AND price IS NOT NULL
 GROUP BY
-    deposit_category;
-
-
--- Корреляция хоста
+  host_has_profile_pic,
+  host_is_superhost,
+  host_identity_verified
+ORDER BY avg_rating DESC;
