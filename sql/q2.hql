@@ -1,4 +1,4 @@
-USE records;
+USE team1_projectdb;
 
 WITH amenities_stats AS (
     SELECT
