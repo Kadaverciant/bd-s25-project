@@ -12,7 +12,7 @@ WITH base AS (
     END AS strategy
   FROM records_part
   WHERE review_scores_rating IS NOT NULL
-    AND price + COALESCE(cleaning_fee, 0) BETWEEN 30 AND 1000  -- фильтруем экстремумы
+    AND price + COALESCE(cleaning_fee, 0)  -- фильтруем экстремумы
 ),
 
 -- добавляем номер сегмента 1..20, равномерно по числу строк
