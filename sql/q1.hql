@@ -22,5 +22,3 @@ WHERE
     AND r.neighbourhood IS NOT NULL
 GROUP BY r.neighbourhood
 HAVING AVG(r.review_scores_rating) >= 80 AND COUNT(*) >= 10;
-
-SELECT * FROM q1_results;

@@ -26,5 +26,3 @@ SELECT *,
        (air_cond_pct + wifi_pct + fridge_pct + washer_pct) / 4 AS avg_premium_amenities_score
 FROM amenities_stats
 ORDER BY avg_price DESC;
-
-SELECT * FROM q2_results;

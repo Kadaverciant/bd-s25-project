@@ -13,5 +13,3 @@ FROM records_part
 WHERE price IS NOT NULL
 GROUP BY month, property_type
 ORDER BY month, property_type;
-
-SELECT * FROM q4_results;

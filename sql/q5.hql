@@ -33,5 +33,3 @@ SELECT
 FROM bucketed
 GROUP BY bucket_num, strategy
 ORDER BY bucket_num, strategy;
-
-SELECT * FROM q5_results;

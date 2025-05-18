@@ -18,5 +18,3 @@ WHERE review_scores_rating IS NOT NULL
   AND host_identity_verified IS NOT NULL
 GROUP BY host_has_profile_pic, host_is_superhost, host_identity_verified
 ORDER BY avg_rating DESC;
-
-SELECT * FROM q3_results;
