@@ -3,4 +3,4 @@
 /secrets
 .*
 /output
-./metastore_db
+/metastore_db
