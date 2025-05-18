@@ -23,9 +23,12 @@ beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password"
 echo "Fifth insight"
 beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q5.hql
 
+echo "Sixth insight"
+beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q6.hql
+
 hadoop fs -mkdir -p /user/team1/project/output
 
-for i in {1..5}; do
+for i in {1..6}; do
   echo "Export table q${i}_results into CSV..."
 
   beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -e "
@@ -55,3 +58,7 @@ cat output/q4.csv
 echo "bucket_num,bucket_min_price,bucket_max_price,strategy,count_listings,avg_rating,avg_rating" > output/q5.csv
 hdfs dfs -cat ./project/output/q5/* >> output/q5.csv
 cat output/q5.csv
+
+echo "latitude,longitude,price" > output/q6.csv
+hdfs dfs -cat ./project/output/q6/* >> output/q6.csv
+cat output/q6.csv
