@@ -38,15 +38,20 @@ done
 
 echo "neighbourhood,avg_price,median_price,price_stddev,min_price,max_price,avg_rating,superhost_percentage,entire_home_ratio,listings_count" > outputs/q1.csv
 hdfs dfs -cat project/output/q1/* >> outputs/q1.csv
+cat outputs/q1.csv
 
 echo "room_type,avg_price,median_price,air_cond_pct,wifi_pct,fridge_pct,hot_water_pct,essentials_pct,washer_pct,avg_bathrooms,avg_bedrooms,listings_count" > outputs/q1.csv
 hdfs dfs -cat project/output/q2/* >> outputs/q2.csv
+cat outputs/q2.csv
 
 echo "host_has_profile_pic,host_is_superhost,host_identity_verified,avg_rating,avg_price,listings_count" > outputs/q1.csv
 hdfs dfs -cat project/output/q3/* >> outputs/q3.csv
+cat outputs/q3.csv
 
 echo "month,property_type,min_price,avg_price,max_price" > outputs/q1.csv
 hdfs dfs -cat project/output/q4/* >> outputs/q4.csv
+cat outputs/q4.csv
 
 echo "bucket_num,bucket_min_price,bucket_max_price,strategy,count_listings,avg_rating,avg_rating" > outputs/q1.csv
 hdfs dfs -cat project/output/q5/* >> outputs/q5.csv
+cat outputs/q5.csv
