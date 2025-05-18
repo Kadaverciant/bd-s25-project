@@ -202,11 +202,7 @@ paramGrid = (
 evaluator = RegressionEvaluator(
     labelCol="review_scores_rating", predictionCol="prediction", metricName="rmse"
 )
-r2_evaluator = RegressionEvaluator(
-    labelCol="review_scores_rating",     
-    predictionCol="prediction",
-    metricName="r2"
-)
+
 
 mae_evaluator = RegressionEvaluator(
     labelCol="review_scores_rating",     
@@ -231,9 +227,8 @@ predictions.select("review_scores_rating", "prediction").coalesce(1).write.mode(
 ).csv("project/output/model1_predictions", header=True)
 
 rmse = evaluator.evaluate(predictions)
-r2 = r2_evaluator.evaluate(predictions)
 mae = mae_evaluator.evaluate(predictions)
-print("Metrics for LR: ",rmse, r2, mae)
+print("Metrics for LR: ",rmse, mae)
 print("Second model training...")
 rf = RandomForestRegressor(
     featuresCol="features",
@@ -272,11 +267,10 @@ predictions_rf.select("review_scores_rating", "prediction").coalesce(1).write.mo
 ).csv("project/output/model2_predictions", header=True)
 
 rmse_rf = evaluator_rf.evaluate(predictions_rf)
-r2_rf = r2_evaluator.evaluate(predictions_rf)
 mae_rf = mae_evaluator.evaluate(predictions_rf)
-print("Metrics for RF: ",rmse_rf, r2_rf, mae_rf)
+print("Metrics for RF: ",rmse_rf, mae_rf)
 
-models = [[str(best_model), rmse, r2, mae], [str(best_model_rf), rmse_rf, r2_rf, mae_rf]]
+models = [[str(best_model), rmse, mae], [str(best_model_rf), rmse_rf, mae_rf]]
 
 df = spark.createDataFrame(models, ["model", "RMSE", "MAE"])
 df.show(truncate=False)
