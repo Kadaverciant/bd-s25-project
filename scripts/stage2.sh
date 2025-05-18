@@ -8,3 +8,6 @@ sh ./scripts/partition.sh
 
 echo "Perform EDA"
 sh ./scripts/get_insights.sh
+
+echo "Run pylint"
+pylint --disable=R,C  .\scripts\
