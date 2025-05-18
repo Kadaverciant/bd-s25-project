@@ -278,7 +278,7 @@ print("Metrics for RF: ",rmse_rf, r2_rf, mae_rf)
 
 models = [[str(best_model), rmse, r2, mae], [str(best_model_rf), rmse_rf, r2_rf, mae_rf]]
 
-df = spark.createDataFrame(models, ["model", "RMSE", "R2", "MAE"])
+df = spark.createDataFrame(models, ["model", "RMSE", "MAE"])
 df.show(truncate=False)
 
 # Save it to HDFS
