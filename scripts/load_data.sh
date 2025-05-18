@@ -1,6 +1,6 @@
 #!/bin/bash
 
-url="https://disk.yandex.ru/d/u8thiV4AI9ocNg"
+url="https://disk.yandex.ru/d/QywgvbhGHMgwEA"
 
 wget "$(yadisk-direct $url)" -O data/data.zip
 

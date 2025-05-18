@@ -1,72 +1,79 @@
 import json
 import warnings
 import pandas as pd
+import numpy as np
 import re
 from collections import Counter
 from tqdm import tqdm
+import calendar
 
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
 print("Start loading data")
-df_s = pd.read_csv("./data/setembro2019.csv")
-df_s['month'] = "september"
-df_o = pd.read_csv("./data/outubro2019.csv")
-df_o['month'] = "october"
-df_n = pd.read_csv("./data/novembro2019.csv")
-df_n['month'] = "november"
-df_d = pd.read_csv("./data/dezembro2019.csv")
-df_d['month'] = "december"
-df_j = pd.read_csv("./data/janeiro2020.csv")
-df_j['month'] = "january"
-df_f = pd.read_csv("./data/fevereiro2020.csv")
-df_f['month'] = "february"
-df_m = pd.read_csv("./data/maro2020.csv")
-df_m['month'] = "march"
-df_a = pd.read_csv("./data/abril2020.csv")
-df_a['month'] = "april"
-df_may = pd.read_csv("./data/maio2020.csv")
-df_may['month'] = "may"
-df = pd.concat([df_s, df_o, df_n, df_d, df_j, df_f, df_m, df_a, df_may])
-print("Data loaded successfully")
 
-headers_json = json.load(open("./scripts/project_data_desc.json"))
-headers = []
-for header in headers_json:
-    headers.append(str(header))
+df = pd.read_csv("./data/total_data.csv")
 
-headers.append("month")
+with open("./scripts/project_data_desc.json") as f:
+    headers_json = json.load(f)
+headers = list(map(str, headers_json)) + ["month"]
+headers_set = set(headers)
 
-df = df[headers]
-df = df.drop_duplicates()
+df = df[headers].dropna(subset=(headers_set - set(['host_response_time','host_response_rate', 'security_deposit', 'cleaning_fee'])))
+df = df[headers].drop_duplicates()
+
 print("Start preprocessing data")
-df['host_response_rate'] = df['host_response_rate'].apply(lambda x: str(x)[:-1] if pd.notna(x) else x)
+
+df['host_response_rate'] = df['host_response_rate'].str.rstrip('%')
 
 price_columns = ['price', "security_deposit", "cleaning_fee", "extra_people"]
-for column in price_columns:
-    df[column] = df[column].apply(lambda x: float(str(x)[1:].replace(",", "")) if pd.notna(x) else x)
+for col in price_columns:
+    df[col] = (
+        df[col]
+        .astype(str)
+        .str.replace(r'[^\d.]', '', regex=True)
+        .replace('', np.nan)
+        .astype(float)
+    )
 
-int_columns = ['bedrooms', "beds"]
-for column in int_columns:
-    df[column] = df[column].astype('Int64')
+int_columns = ['bedrooms', 'beds']
+df[int_columns] = df[int_columns].astype('Int64')
+
 print("End preprocessing data")
 
 print("Start parsing attributes")
+amenity_cleaner = re.compile(r'[{}"]')
+
+clean_amenities = df['amenities'].astype(str).str.replace(amenity_cleaner, '', regex=True)
+split_amenities = clean_amenities.str.split(',')
+
 c = Counter()
-for index, row in df.iterrows():
-    temp = re.sub('[{}"]', '', row["amenities"])
-    c.update(temp.split(","))
+split_amenities.dropna().apply(c.update)
 
-features = [x[0] for x in c.most_common(20)]
-df[features] = False
+features = [k for k, _ in c.most_common(20)]
 
-for index, row in tqdm(df.iterrows(), total=len(df), desc="Build amenities"):
-    temp = re.sub('[{}"]', '', row["amenities"])
-    for header in temp.split(","):
-        if header in features:
-            df.loc[index, header] = True
+for feature in tqdm(features):
+    df[feature] = split_amenities.apply(lambda x: feature in x if isinstance(x, list) else False)
 
-df.drop(["amenities"], axis=1, inplace=True)
+AMENITY_PATTERN = re.compile(r'"([^"]+)"|([^,{}"]+)')
+def extract_amenities_fast(series: pd.Series) -> pd.Series:
+    stripped = series.astype(str).str.strip('{}')
+
+    return stripped.map(
+        lambda x: ', '.join(m.group(1) or m.group(2) for m in AMENITY_PATTERN.finditer(x))
+    )
+
+df['amenities'] = extract_amenities_fast(df['amenities'])
 print("Finish parsing attributes")
+
+month_map = {i: calendar.month_name[i].lower() for i in range(1, 13)}
+df['month'] = df['month'].map(month_map)
+
+df.fillna({
+    'host_response_time': 'unknown',
+    'host_response_rate': 0.0,
+    'security_deposit': 0.0,
+    'cleaning_fee': 0.0,
+}, inplace=True)
 
 df.to_csv("./data/cleaned.csv", index=False)
 print("Data stored successfully")
