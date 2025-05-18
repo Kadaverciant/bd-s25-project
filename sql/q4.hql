@@ -2,9 +2,7 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS q4_results;
 
-INSERT OVERWRITE LOCAL DIRECTORY '/outputs/q4'
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
+CREATE TABLE q4_results AS
 SELECT
   month,
   property_type,
@@ -15,3 +13,5 @@ FROM records_part
 WHERE price IS NOT NULL
 GROUP BY month, property_type
 ORDER BY month, property_type;
+
+SELECT * FROM q4_results;
