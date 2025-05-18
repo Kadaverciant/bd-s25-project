@@ -15,8 +15,7 @@ SELECT
     ROUND(AVG(CASE WHEN r.room_type = 'Entire home/apt' THEN 1.0 ELSE 0.0 END) * 100, 2) AS entire_home_ratio,
     COUNT(*) AS listings_count
 FROM records_part r
-WHERE
-    AND r.price > 10
+WHERE r.price > 10
     AND r.price IS NOT NULL
     AND r.neighbourhood IS NOT NULL
 GROUP BY r.neighbourhood
