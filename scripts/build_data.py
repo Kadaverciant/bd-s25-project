@@ -99,6 +99,7 @@ df.fillna(
         "host_response_rate": 0,
         "security_deposit": 0.0,
         "cleaning_fee": 0.0,
+        "amenities": "",
     },
     inplace=True,
 )
