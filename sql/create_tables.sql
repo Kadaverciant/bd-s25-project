@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS records (
     bedrooms integer,
     beds integer,
     bed_type varchar(30),
-    amenities text,
+    amenities varchar(1500),
     price real,
     security_deposit real,
     cleaning_fee real,
