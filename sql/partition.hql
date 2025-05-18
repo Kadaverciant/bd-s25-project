@@ -114,4 +114,6 @@ SELECT
     month
 FROM records;
 
+SELECT * FROM records_part LIMIT 1;
+
 DROP TABLE IF EXISTS records;
