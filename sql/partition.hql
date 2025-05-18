@@ -60,8 +60,6 @@ CLUSTERED BY (neighbourhood) INTO 4 BUCKETS
 STORED AS AVRO
 LOCATION 'project/hive/warehouse/records_part';
 
-SELECT * FROM records LIMIT 2;
-
 INSERT INTO TABLE records_part PARTITION(month)
 SELECT
     cast(to_date(from_utc_timestamp(host_since, "+00")) as date) as host_since,
@@ -113,3 +111,5 @@ SELECT
     refrigerator,
     month
 FROM records;
+
+DROP TABLE IF EXISTS records;

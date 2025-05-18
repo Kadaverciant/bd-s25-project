@@ -2,8 +2,8 @@
 
 password=$(head -n 1 secrets/.psql.pass)
 
-rm -rf outputs
-mkdir -p outputs
+rm -rf output
+mkdir -p output
 
 PROJECT_FOLDER="/user/team1/project"
 WAREHOUSE_FOLDER="$PROJECT_FOLDER/warehouse"
@@ -48,14 +48,14 @@ sqoop import \
   --as-parquetfile \
   --warehouse-dir=$WAREHOUSE_FOLDER \
   --m 1 \
-  --outdir "$(pwd)/outputs" \
+  --outdir "$(pwd)/output" \
   --table records
 
 end_time=$(date +%s)
 execution_time=$((end_time - start_time))
 
 #hdfs dfs -mkdir -p "$WAREHOUSE_FOLDER/avsc"
-#hdfs dfs -put -f outputs/*.avsc "$WAREHOUSE_FOLDER/avsc"
+#hdfs dfs -put -f output/*.avsc "$WAREHOUSE_FOLDER/avsc"
 
 echo "Sqoop import completed in $execution_time seconds"
 show_hdfs_size "$WAREHOUSE_FOLDER"
