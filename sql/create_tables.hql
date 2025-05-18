@@ -22,6 +22,7 @@ CREATE EXTERNAL TABLE records (
     bedrooms INT,
     beds INT,
     bed_type STRING,
+    amenities STRING,
     price FLOAT,
     security_deposit FLOAT,
     cleaning_fee FLOAT,
