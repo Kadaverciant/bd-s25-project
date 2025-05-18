@@ -16,7 +16,6 @@ SELECT
     COUNT(*) AS listings_count
 FROM records_part r
 WHERE
-    r.month IN ('september', 'october', 'november', 'december', 'january', 'february', 'march', 'april', 'may')
     AND r.price > 10
     AND r.price IS NOT NULL
     AND r.neighbourhood IS NOT NULL

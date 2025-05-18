@@ -18,11 +18,10 @@ WITH amenities_stats AS (
         ROUND(AVG(r.bedrooms), 1) AS avg_bedrooms,
         COUNT(*) AS listings_count
     FROM records_part r
-    WHERE r.month IN ('september', 'october', 'november', 'december', 'january', 'february', 'march', 'april', 'may')
-      AND r.price BETWEEN 10 AND 10000
+    WHERE r.price BETWEEN 10 AND 10000
     GROUP BY r.room_type
 )
 SELECT *,
-       (air_cond_pct + wifi_pct + fridge_pct + washer_pct) / 4 AS avg_premium_amenities_score
+       (air_cond_pct + wifi_pct + fridge_pct + hot_water_pct + essentials_pct + washer_pct ) / 6 AS avg_premium_amenities_score
 FROM amenities_stats
 ORDER BY avg_price DESC;
