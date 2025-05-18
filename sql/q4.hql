@@ -14,6 +14,7 @@ with popular as (
 SELECT
   month,
   property_type,
+  room_type,
   price,
   review_scores_rating
 FROM records_part as r

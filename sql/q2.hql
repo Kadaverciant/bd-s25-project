@@ -11,7 +11,7 @@ with popular as (
     order by count desc
     limit 25
 )
-SELECT room_type, neighbourhood, price, review_scores_rating,
+SELECT room_type, property_type, neighbourhood, price, review_scores_rating,
        ROUND((CASE WHEN r.air_conditioning THEN 1.0 ELSE 0.0 END +
        CASE WHEN r.wifi THEN 1.0 ELSE 0.0 END +
        CASE WHEN r.refrigerator THEN 1.0 ELSE 0.0 END +
