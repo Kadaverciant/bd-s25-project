@@ -1,22 +1,22 @@
-import json
-import warnings
-import pandas as pd
-import numpy as np
-import re
-from collections import Counter
-from tqdm import tqdm
 import calendar
 import functools
+import json
+import re
+import warnings
+from collections import Counter
+
+import numpy as np
+import pandas as pd
+from tqdm import tqdm
 
 warnings.filterwarnings("ignore")
 
-print("Start loading data")
 
 df = pd.read_csv("./data/total_data.csv")
 
 with open("./scripts/project_data_desc.json", encoding="utf-8") as f:
     headers_json = json.load(f)
-headers = list(map(str, headers_json)) + ["month"]
+headers = [*list(map(str, headers_json)), "month"]
 headers_set = set(headers)
 
 df = df[headers].dropna(
@@ -28,12 +28,11 @@ df = df[headers].dropna(
             "security_deposit",
             "cleaning_fee",
         }
-    )
+    ),
 )
 
 df = df[headers].drop_duplicates()
 
-print("Start preprocessing data")
 
 df["host_response_rate"] = df["host_response_rate"].str.rstrip("%")
 
@@ -50,9 +49,7 @@ for col in price_columns:
 int_columns = ["bedrooms", "beds"]
 df[int_columns] = df[int_columns].astype("Int64")
 
-print("End preprocessing data")
 
-print("Start parsing attributes")
 amenity_cleaner = re.compile(r'[{}"]')
 
 clean_amenities = (
@@ -83,17 +80,16 @@ def extract_amenities_fast(series: pd.Series) -> pd.Series:
     return stripped.map(
         lambda x: ", ".join(
             m.group(1) or m.group(2) for m in AMENITY_PATTERN.finditer(x)
-        )
+        ),
     )
 
 
 df["amenities"] = extract_amenities_fast(df["amenities"])
-print("Finish parsing attributes")
 
 month_map = {i: calendar.month_name[i].lower() for i in range(1, 13)}
 df["month"] = df["month"].map(month_map)
 
-df.fillna(
+df = df.fillna(
     {
         "host_response_time": "unknown",
         "host_response_rate": 0,
@@ -101,8 +97,6 @@ df.fillna(
         "cleaning_fee": 0.0,
         "amenities": "",
     },
-    inplace=True,
 )
 
 df.to_csv("./data/cleaned.csv", index=False)
-print("Data stored successfully")
