@@ -14,4 +14,4 @@ echo "Run formatter"
 sh ./scripts/format.sh
 
 echo "Run pylint"
-pylint --disable=R,C  .\scripts\
+pylint --disable=R,C  ./scripts
