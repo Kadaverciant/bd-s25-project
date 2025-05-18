@@ -96,7 +96,7 @@ df["month"] = df["month"].map(month_map)
 df.fillna(
     {
         "host_response_time": "unknown",
-        "host_response_rate": 0.0,
+        "host_response_rate": 0,
         "security_deposit": 0.0,
         "cleaning_fee": 0.0,
     },
