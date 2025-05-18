@@ -2,7 +2,9 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS q4_results;
 
-CREATE TABLE q4_results AS
+INSERT OVERWRITE LOCAL DIRECTORY '/outputs/q4'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
 SELECT
   month,
   property_type,

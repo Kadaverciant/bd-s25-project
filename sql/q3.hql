@@ -2,7 +2,9 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS q3_results;
 
-CREATE TABLE q3_results AS
+INSERT OVERWRITE LOCAL DIRECTORY '/outputs/q3'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
 SELECT
   host_has_profile_pic,
   host_is_superhost,

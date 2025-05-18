@@ -2,7 +2,6 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS q2_results;
 
-CREATE TABLE q2_results AS
 WITH amenities_stats AS (
     SELECT
         r.room_type,
@@ -22,6 +21,9 @@ WITH amenities_stats AS (
       AND r.price BETWEEN 10 AND 10000
     GROUP BY r.room_type
 )
+INSERT OVERWRITE LOCAL DIRECTORY '/outputs/q2'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
 SELECT *,
        (air_cond_pct + wifi_pct + fridge_pct + washer_pct) / 4 AS avg_premium_amenities_score
 FROM amenities_stats

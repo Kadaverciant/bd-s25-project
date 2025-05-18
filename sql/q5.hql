@@ -2,7 +2,6 @@ USE team1_projectdb;
 
 DROP TABLE IF EXISTS q5_results;
 
-CREATE TABLE q5_results AS
 WITH base AS (
   SELECT
     price,
@@ -23,6 +22,9 @@ bucketed AS (
     ntile(20) OVER (ORDER BY total_price) AS bucket_num
   FROM base
 )
+INSERT OVERWRITE LOCAL DIRECTORY '/outputs/q5'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
 SELECT
   bucket_num,
   ROUND(MIN(total_price), 2) AS bucket_min_price,
