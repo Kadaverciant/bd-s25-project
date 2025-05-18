@@ -286,3 +286,12 @@ df.coalesce(1).write.mode("overwrite").format("csv").option("sep", ",").option(
     "header", "true"
 ).save("project/output/evaluation.csv")
 
+predictions.write.mode("overwrite").saveAsTable("team1_projectdb.predictions_lr")
+predictions_rf.write.mode("overwrite").saveAsTable("team1_projectdb.predictions_rf")
+
+metrics = spark.createDataFrame([
+    ("lr", rmse, mae),
+    ("rf", rmse_rf, mae_rf)
+], ["model_name", "rmse", "mae"])
+
+metrics.write.mode("overwrite").saveAsTable("team1_projectdb.evaluation_results")
