@@ -2,6 +2,5 @@
 /.idea
 /secrets
 .*
-/output
 /metastore_db
 derby.log
