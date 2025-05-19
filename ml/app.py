@@ -1,28 +1,52 @@
-from pyspark.ml import Pipeline
+import os
+import shutil
+import subprocess
+
+import pyspark.sql.functions as F
+from pyspark.ml import Pipeline, Transformer
 from pyspark.ml.evaluation import RegressionEvaluator
 from pyspark.ml.feature import (
     OneHotEncoder,
+    SQLTransformer,
     StringIndexer,
     VectorAssembler,
+    Word2Vec,
 )
 from pyspark.ml.regression import LinearRegression, RandomForestRegressor
 from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
-from pyspark.sql import SparkSession
+from pyspark.sql import DataFrame, Row, SparkSession
 from pyspark.sql.functions import (
     col,
+    cos,
+    radians,
+    sin,
+    sqrt,
     to_date,
 )
 
-from pyspark.ml import Transformer
-from pyspark.ml.param.shared import Param, Params
-from pyspark.sql.functions import col, radians, sin, cos, sqrt, split
-from pyspark.sql import DataFrame
-import pyspark.sql.functions as F
-from pyspark.ml.feature import Tokenizer, Word2Vec, SQLTransformer
+
+def extract_cv_metrics(cv_model, test_df, evaluator, mae_evaluator, model_name=""):
+    results = []
+    for i, model in enumerate(cv_model.getEstimatorParamMaps()):
+        trained_model = cv_model.subModels[i][
+            0
+        ] 
+
+        predictions = trained_model.transform(test_df)
+        rmse = evaluator.evaluate(predictions)
+        mae = mae_evaluator.evaluate(predictions)
+
+        params_dict = {param.name: trained_model.getOrDefault(param) for param in model}
+        params_dict["rmse"] = rmse
+        params_dict["mae"] = mae
+        params_dict["model_name"] = model_name
+        results.append(params_dict)
+
+    return results
 
 
 class GeoToECEFTransformer(Transformer):
-    def __init__(self, lat_col="latitude", lon_col="longitude", alt_col=None):
+    def __init__(self, lat_col="latitude", lon_col="longitude", alt_col=None) -> None:
         super().__init__()
         self.lat_col = lat_col
         self.lon_col = lon_col
@@ -42,19 +66,17 @@ class GeoToECEFTransformer(Transformer):
         lat_rad = radians(col(self.lat_col))
         lon_rad = radians(col(self.lon_col))
 
-        N = a / sqrt(1 - e_sq * sin(lat_rad)**2)
+        N = a / sqrt(1 - e_sq * sin(lat_rad) ** 2)
 
-        
         x = (N + alt) * cos(lat_rad) * cos(lon_rad)
         y = (N + alt) * cos(lat_rad) * sin(lon_rad)
         z = (N * (1 - e_sq) + alt) * sin(lat_rad)
 
         return df.withColumn("x", x).withColumn("y", y).withColumn("z", z)
 
+
 warehouse = "project/hive/warehouse"
 
-
-print("Start connection...")
 
 spark = (
     SparkSession.builder.appName("ML_team1")
@@ -79,15 +101,17 @@ df = df.dropna(subset=["review_scores_rating"])
 df = df.withColumn("host_since", to_date(col("host_since").cast("string"), "yyyyMMdd"))
 df = df.filter(col("review_scores_rating").isNotNull())
 
-split_amenities = SQLTransformer(statement="""
+split_amenities = SQLTransformer(
+    statement="""
     SELECT *, split(coalesce(amenities, ''), ',\\s*') AS amenities_tokens FROM __THIS__
-""")
+"""
+)
 
 word2vec = Word2Vec(
     inputCol="amenities_tokens",
     outputCol="amenities_vec",
-    vectorSize=8,  
-    minCount=1
+    vectorSize=8,
+    minCount=1,
 )
 
 geo_transformer = GeoToECEFTransformer()
@@ -165,33 +189,31 @@ assembler_inputs = encoded_cols + boolean_cols + numerical_cols + ["amenities_ve
 
 assembler = VectorAssembler(inputCols=assembler_inputs, outputCol="features")
 
+pipeline = Pipeline(
+    stages=[
+        split_amenities,
+        word2vec,
+        geo_transformer,
+        *indexers,
+        *encoders,
+        assembler,
+    ]
+)
 print("Start pipeline...")
-pipeline = Pipeline(stages=[
-    split_amenities,
-    word2vec,
-    geo_transformer,  
-    *indexers,
-    *encoders,
-    assembler
-])
-
 pipeline_model = pipeline.fit(df)
 df_prepared = pipeline_model.transform(df)
-print("End pipeline...")
-print("Start spliting and saving to JSON...")
-
+print("Start split data...")
 train_df, test_df = df_prepared.randomSplit([0.8, 0.2], seed=42)
 
 train_df.select("features", "review_scores_rating").write.mode("overwrite").json(
-    "project/data/train"
+    "project/data/train",
 )
 test_df.select("features", "review_scores_rating").write.mode("overwrite").json(
-    "project/data/test"
+    "project/data/test",
 )
 
-print("First model training...")
 lr = LinearRegression(featuresCol="features", labelCol="review_scores_rating")
-
+print("Start grid search and training for LR...")
 paramGrid = (
     ParamGridBuilder()
     .addGrid(lr.regParam, [0.01, 0.1, 1.0])
@@ -200,14 +222,16 @@ paramGrid = (
 )
 
 evaluator = RegressionEvaluator(
-    labelCol="review_scores_rating", predictionCol="prediction", metricName="rmse"
+    labelCol="review_scores_rating",
+    predictionCol="prediction",
+    metricName="rmse",
 )
 
 
 mae_evaluator = RegressionEvaluator(
-    labelCol="review_scores_rating",     
+    labelCol="review_scores_rating",
     predictionCol="prediction",
-    metricName="mae"
+    metricName="mae",
 )
 cv = CrossValidator(
     estimator=lr,
@@ -216,25 +240,42 @@ cv = CrossValidator(
     numFolds=3,
 )
 
+model_path = "project/models/model1"
+model_path2 = "project/models/model2"
+
+
+def hdfs_delete_if_exists(hdfs_path) -> None:
+    subprocess.call(["hdfs", "dfs", "-rm", "-r", "-f", hdfs_path])
+
+
+hdfs_delete_if_exists(model_path)
+hdfs_delete_if_exists(model_path2)
+
+if os.path.exists(model_path):
+    shutil.rmtree(model_path)
+
+if os.path.exists(model_path2):
+    shutil.rmtree(model_path2)
+
+
 cv_model = cv.fit(train_df)
 best_model = cv_model.bestModel
-best_model.save("project/models/model1")
+best_model.save(model_path)
 
 predictions = best_model.transform(test_df)
-print("First model Prediction...")
 predictions.select("review_scores_rating", "prediction").coalesce(1).write.mode(
-    "overwrite"
+    "overwrite",
 ).csv("project/output/model1_predictions", header=True)
 
 rmse = evaluator.evaluate(predictions)
 mae = mae_evaluator.evaluate(predictions)
-print("Metrics for LR: ",rmse, mae)
-print("Second model training...")
 rf = RandomForestRegressor(
     featuresCol="features",
     labelCol="review_scores_rating",
     seed=42,
 )
+
+print("Start grid search and training for RF...")
 
 paramGrid_rf = (
     ParamGridBuilder()
@@ -258,17 +299,18 @@ cv_rf = CrossValidator(
 
 cv_model_rf = cv_rf.fit(train_df)
 best_model_rf = cv_model_rf.bestModel
-best_model_rf.save("project/models/model2")
-print("Second model Prediction...")
+best_model_rf.save(model_path2)
 predictions_rf = best_model_rf.transform(test_df)
 
 predictions_rf.select("review_scores_rating", "prediction").coalesce(1).write.mode(
-    "overwrite"
+    "overwrite",
 ).csv("project/output/model2_predictions", header=True)
 
 rmse_rf = evaluator_rf.evaluate(predictions_rf)
 mae_rf = mae_evaluator.evaluate(predictions_rf)
-print("Metrics for RF: ",rmse_rf, mae_rf)
+
+print(f"Results for LR: RMSE: {rmse}, MAE: {mae} ")
+print(f"Results for RF: RMSE: {rmse_rf}, MAE: {mae_rf} ")
 
 models = [[str(best_model), rmse, mae], [str(best_model_rf), rmse_rf, mae_rf]]
 
@@ -277,15 +319,81 @@ df.show(truncate=False)
 
 # Save it to HDFS
 df.coalesce(1).write.mode("overwrite").format("csv").option("sep", ",").option(
-    "header", "true"
+    "header",
+    "true",
 ).save("project/output/evaluation.csv")
 
 predictions.write.mode("overwrite").saveAsTable("team1_projectdb.predictions_lr")
 predictions_rf.write.mode("overwrite").saveAsTable("team1_projectdb.predictions_rf")
 
-metrics = spark.createDataFrame([
-    ("lr", rmse, mae),
-    ("rf", rmse_rf, mae_rf)
-], ["model_name", "rmse", "mae"])
+metrics = spark.createDataFrame(
+    [
+        ("lr", rmse, mae),
+        ("rf", rmse_rf, mae_rf),
+    ],
+    ["model_name", "rmse", "mae"],
+)
 
 metrics.write.mode("overwrite").saveAsTable("team1_projectdb.evaluation_results")
+
+
+# LR
+feature_names = assembler.getInputCols()
+
+coeffs = best_model.coefficients.toArray().tolist()
+
+lr_rows = [
+    Row(feature=name, weight=float(w), model="LinearRegression")
+    for name, w in zip(feature_names, coeffs)
+]
+
+lr_feat_df = spark.createDataFrame(lr_rows)
+
+lr_feat_df.write.mode("overwrite").saveAsTable("team1_projectdb.feature_importance_lr")
+
+# RF
+
+rf_importances = best_model_rf.featureImportances.toArray().tolist()
+
+rf_rows = [
+    Row(feature=name, importance=float(imp), model="RandomForest")
+    for name, imp in zip(feature_names, rf_importances)
+]
+
+rf_feat_df = spark.createDataFrame(rf_rows)
+
+rf_feat_df.write.mode("overwrite").saveAsTable("team1_projectdb.feature_importance_rf")
+
+# Concat
+
+lr_feat_df = lr_feat_df.withColumnRenamed("weight", "metric")
+rf_feat_df = rf_feat_df.withColumnRenamed("importance", "metric")
+
+all_feat_df = lr_feat_df.unionByName(rf_feat_df)
+
+# all_feat_df.write.mode("overwrite").saveAsTable("team1_projectdb.feature_importance")
+
+
+lr_results = extract_cv_metrics(
+    cv_model=cv_model,
+    test_df=test_df,
+    evaluator=evaluator,
+    mae_evaluator=mae_evaluator,
+    model_name="LinearRegression",
+)
+
+rf_results = extract_cv_metrics(
+    cv_model=cv_model_rf,
+    test_df=test_df,
+    evaluator=evaluator_rf,
+    mae_evaluator=mae_evaluator,
+    model_name="RandomForest",
+)
+
+all_results = lr_results + rf_results
+rows = [Row(**r) for r in all_results]
+metrics_df = spark.createDataFrame(rows)
+
+metrics_df.show(truncate=False)
+
+metrics_df.write.mode("overwrite").saveAsTable("team1_projectdb.grid_search_results")
