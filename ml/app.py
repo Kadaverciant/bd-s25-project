@@ -123,6 +123,7 @@ df = df.dropna(subset=["review_scores_rating"])
 
 df = df.withColumn("host_since", to_date(col("host_since").cast("string"), "yyyyMMdd"))
 df = df.filter(col("review_scores_rating").isNotNull())
+df = df.sample(fraction = 0.001)
 
 split_amenities = SQLTransformer(
     statement="""
