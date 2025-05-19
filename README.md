@@ -99,7 +99,8 @@ bash scripts/main.sh
 │   └── test_database.sql
 │
 ├── .gitignore
-└── README.md                      # This file
+├── README.md                      # This file
+└── requirements.txt               # Python requirements
 ```
 
 ---
