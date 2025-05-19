@@ -3,13 +3,19 @@ USE team1_projectdb;
 DROP TABLE IF EXISTS q4_results;
 
 CREATE TABLE q4_results AS
+with popular as (
+    select property_type, count(*) as count
+    from records_part
+    where property_type IS NOT NULL
+    group by property_type
+    order by count desc
+    limit 25
+)
 SELECT
   month,
   property_type,
-  ROUND(MIN(price), 2) AS min_price,
-  ROUND(AVG(price), 2) AS avg_price,
-  ROUND(MAX(price), 2) AS max_price
-FROM records_part
-WHERE price IS NOT NULL
-GROUP BY month, property_type
-ORDER BY month, property_type;
+  room_type,
+  price,
+  review_scores_rating
+FROM records_part as r
+WHERE price IS NOT NULL AND r.property_type in (select p.property_type from popular as p);
