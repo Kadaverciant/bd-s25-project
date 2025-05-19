@@ -31,5 +31,4 @@ SELECT
     review_scores_rating,
     verification_status,
 	  price
-FROM verification_combinations
-WHERE verification_status != 'unverified';
+FROM verification_combinations;
