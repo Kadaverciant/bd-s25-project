@@ -24,11 +24,6 @@ from pyspark.sql.functions import (
     to_date,
 )
 
-spark_home = os.environ.get('SPARK_HOME', None)
-if spark_home:
-    sys.path.insert(0, os.path.join(spark_home, 'python'))
-    sys.path.insert(0, os.path.join(spark_home, 'python/lib/py4j-0.10.9.3-src.zip'))
-    print("OK")
 
 def extract_cv_metrics(cv_model, test_df, evaluator, mae_evaluator, model_name=""):
     results = []
