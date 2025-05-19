@@ -9,7 +9,7 @@ WITH top_property AS (
     WHERE property_type IS NOT NULL
     GROUP BY property_type
     ORDER BY COUNT(*) DESC
-    LIMIT 25
+    LIMIT 10
 ),
 top_property_room AS (
     SELECT
@@ -21,7 +21,7 @@ top_property_room AS (
       AND room_type IS NOT NULL
     GROUP BY property_type, room_type
     ORDER BY record_count DESC
-    LIMIT 25
+    LIMIT 10
 )
 SELECT
     r.month,
