@@ -2,7 +2,7 @@
 
 password=$(head -n 1 secrets/.psql.pass)
 
-spark-submit --master yarn ml/app.py
+spark-submit --master yarn scrips/app.py
 
 hdfs dfs -cat project/output/model1_predictions/*.csv > output/model1_predictions.csv
 
