@@ -58,6 +58,9 @@ CREATE EXTERNAL TABLE records (
 )
 STORED AS PARQUET LOCATION 'project/warehouse/records';
 
+-- CREATE EXTERNAL TABLE records STORED AS AVRO LOCATION '/user/team1/project/warehouse/avro_snappy/records'
+-- TBLPROPERTIES ('avro.schema.url'='/user/team1/project/warehouse/avro_snappy/avsc/records.avsc');
+
 EXPLAIN ANALYZE SELECT COUNT(*) FROM records;
 SELECT COUNT(*) FROM records;
 SELECT * FROM records LIMIT 10;
