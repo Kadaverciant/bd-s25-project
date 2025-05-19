@@ -1,0 +1,13 @@
+LinearRegression,regParam=1.0, elasticNetParam=0.0,9.020226300253103,5.645443729976641
+LinearRegression,regParam=1.0, elasticNetParam=0.5,9.281266891234095,5.8499151493962005
+LinearRegression,regParam=1.0, elasticNetParam=1.0,9.322375701329602,5.949401976738663
+RandomForest,numTrees=5, maxDepth=5,9.117062314201862,5.702381937770276
+RandomForest,numTrees=5, maxDepth=10,8.434849098289993,5.352259338617348
+RandomForest,numTrees=10, maxDepth=5,9.163409071247997,5.742363694961696
+RandomForest,numTrees=10, maxDepth=10,8.396825672668763,5.322899141693098
+LinearRegression,regParam=0.01, elasticNetParam=0.0,9.136865567163943,5.64208985762365
+LinearRegression,regParam=0.01, elasticNetParam=0.5,8.995261832102626,5.6353872196268275
+LinearRegression,regParam=0.01, elasticNetParam=1.0,9.11962297833501,5.645736566078238
+LinearRegression,regParam=0.1, elasticNetParam=0.0,9.07135092507176,5.624954232124199
+LinearRegression,regParam=0.1, elasticNetParam=0.5,9.04939907492952,5.687129790541594
+LinearRegression,regParam=0.1, elasticNetParam=1.0,9.145718105661125,5.7069867159559164
