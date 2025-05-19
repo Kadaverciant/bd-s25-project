@@ -40,11 +40,28 @@ def extract_cv_metrics(cv_model, test_df, evaluator, mae_evaluator, model_name="
         rmse = evaluator.evaluate(predictions)
         mae = mae_evaluator.evaluate(predictions)
 
-        params_dict = {param.name: trained_model.getOrDefault(param) for param in model_params}
-        params_dict["rmse"] = rmse
-        params_dict["mae"] = mae
-        params_dict["model"] = model_name
-        results.append(params_dict)
+        # Универсальные поля
+        result = {
+            "model": model_name,
+            "rmse": rmse,
+            "mae": mae,
+            # Параметры по умолчанию
+            "regParam": None,
+            "elasticNetParam": None,
+            "numTrees": None,
+            "maxDepth": None,
+        }
+
+        if "regParam" in trained_model.extractParamMap():
+            result["regParam"] = trained_model.getOrDefault("regParam")
+        if "elasticNetParam" in trained_model.extractParamMap():
+            result["elasticNetParam"] = trained_model.getOrDefault("elasticNetParam")
+        if "numTrees" in trained_model.extractParamMap():
+            result["numTrees"] = trained_model.getOrDefault("numTrees")
+        if "maxDepth" in trained_model.extractParamMap():
+            result["maxDepth"] = trained_model.getOrDefault("maxDepth")
+
+        results.append(Row(**result))
 
     return results
 
@@ -401,8 +418,8 @@ rf_results = extract_cv_metrics(
 )
 
 all_results = lr_results + rf_results
-rows = [Row(**r) for r in all_results]
-metrics_df = spark.createDataFrame(rows)
+# rows = [Row(**r) for r in all_results]
+metrics_df = spark.createDataFrame(all_results)
 
 
 metrics_df.write.mode("overwrite").saveAsTable("team1_projectdb.grid_search_results")
