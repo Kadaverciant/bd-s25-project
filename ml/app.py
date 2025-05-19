@@ -1,7 +1,7 @@
 import os
 import shutil
 import subprocess
-import sys
+
 import pyspark.sql.functions as F
 from pyspark.ml import Pipeline, Transformer
 from pyspark.ml.evaluation import RegressionEvaluator
@@ -45,8 +45,8 @@ def evaluate_cv_model(cv_model, test_df, evaluator_rmse, evaluator_mae, model_na
                 predictions = model.transform(test_df)
                 rmses.append(evaluator_rmse.evaluate(predictions))
                 maes.append(evaluator_mae.evaluate(predictions))
-            except Exception as e:
-                print(f"Error in fold {fold}, param idx {i}: {e}")
+            except Exception:
+                pass
 
         avg_rmse = sum(rmses) / len(rmses) if rmses else None
         avg_mae = sum(maes) / len(maes) if maes else None
@@ -54,12 +54,14 @@ def evaluate_cv_model(cv_model, test_df, evaluator_rmse, evaluator_mae, model_na
         param_map = param_maps[i]
         param_str = ", ".join(f"{param.name}={param_map[param]}" for param in param_map)
 
-        results.append(Row(
-            model=model_name,
-            params=param_str,
-            rmse=avg_rmse,
-            mae=avg_mae,
-        ))
+        results.append(
+            Row(
+                model=model_name,
+                params=param_str,
+                rmse=avg_rmse,
+                mae=avg_mae,
+            )
+        )
     return results
 
 
@@ -96,9 +98,9 @@ class GeoToECEFTransformer(Transformer):
 def hdfs_delete_if_exists(hdfs_path) -> None:
     subprocess.call(["hdfs", "dfs", "-rm", "-r", "-f", hdfs_path])
 
+
 model_path = "project/models/model1"
 model_path2 = "project/models/model2"
-
 
 
 hdfs_delete_if_exists(model_path)
@@ -140,7 +142,7 @@ df = df.filter(col("review_scores_rating").isNotNull())
 split_amenities = SQLTransformer(
     statement="""
     SELECT *, split(coalesce(amenities, ''), ',\\s*') AS amenities_tokens FROM __THIS__
-"""
+""",
 )
 
 word2vec = Word2Vec(
@@ -232,12 +234,10 @@ pipeline = Pipeline(
         *indexers,
         *encoders,
         assembler,
-    ]
+    ],
 )
-print("Start pipeline...")
 pipeline_model = pipeline.fit(df)
 df_prepared = pipeline_model.transform(df)
-print("Start split data...")
 train_df, test_df = df_prepared.randomSplit([0.8, 0.2], seed=42)
 
 train_df.select("features", "review_scores_rating").write.mode("overwrite").json(
@@ -248,7 +248,6 @@ test_df.select("features", "review_scores_rating").write.mode("overwrite").json(
 )
 
 lr = LinearRegression(featuresCol="features", labelCol="review_scores_rating")
-print("Start grid search and training for LR...")
 paramGrid = (
     ParamGridBuilder()
     .addGrid(lr.regParam, [0.01, 0.1, 1.0])
@@ -273,9 +272,8 @@ cv = CrossValidator(
     estimatorParamMaps=paramGrid,
     evaluator=evaluator,
     numFolds=3,
-    collectSubModels=True
+    collectSubModels=True,
 )
-
 
 
 cv_model = cv.fit(train_df)
@@ -296,7 +294,6 @@ rf = RandomForestRegressor(
     seed=42,
 )
 
-print("Start grid search and training for RF...")
 
 paramGrid_rf = (
     ParamGridBuilder()
@@ -316,7 +313,7 @@ cv_rf = CrossValidator(
     estimatorParamMaps=paramGrid_rf,
     evaluator=evaluator_rf,
     numFolds=3,
-    collectSubModels=True
+    collectSubModels=True,
 )
 
 cv_model_rf = cv_rf.fit(train_df)
@@ -331,8 +328,6 @@ predictions_rf.select("review_scores_rating", "prediction").coalesce(1).write.mo
 rmse_rf = evaluator_rf.evaluate(predictions_rf)
 mae_rf = mae_evaluator.evaluate(predictions_rf)
 
-print(f"Results for LR: RMSE: {rmse}, MAE: {mae} ")
-print(f"Results for RF: RMSE: {rmse_rf}, MAE: {mae_rf} ")
 
 models = [[str(best_model), rmse, mae], [str(best_model_rf), rmse_rf, mae_rf]]
 
