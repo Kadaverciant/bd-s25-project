@@ -17,6 +17,7 @@ An **S25 Big Data Project**
 - [Quick Start](#quick-start)
 - [Repository Structure](#repository-structure)
 - [Contact](#contact)
+- [References](#references)
 
 ---
 
@@ -108,3 +109,7 @@ bash scripts/main.sh
 ## Contact
 
 If you have any questions, feel free to reach out via the university emails listed above.
+
+## References
+
+- [Raw dataset](https://www.kaggle.com/datasets/hazujaf/airbnb-price-prediction-in-rio-de-janeiro-python?resource=download)
