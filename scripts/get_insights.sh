@@ -26,9 +26,13 @@ beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password"
 echo "Sixth insight"
 beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q6.hql
 
+
+echo "Seventh insight"
+beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -f sql/q7.hql
+
 hadoop fs -mkdir -p /user/team1/project/output
 
-for i in {1..6}; do
+for i in {1..7}; do
   echo "Export table q${i}_results into CSV..."
 
   beeline -u jdbc:hive2://hadoop-03.uni.innopolis.ru:10001 -n team1 -p "$password" -e "
@@ -39,26 +43,30 @@ for i in {1..6}; do
   SELECT * FROM team1_projectdb.q${i}_results;"
 done
 
-echo "neighbourhood,avg_price,median_price,price_stddev,min_price,max_price,avg_rating,superhost_percentage,entire_home_ratio,listings_count" > output/q1.csv
+echo "neighbourhood,price,review_scores_rating" > output/q1.csv
 hdfs dfs -cat ./project/output/q1/* >> output/q1.csv
 head -n 10 output/q1.csv
 
-echo "room_type,avg_price,median_price,air_cond_pct,wifi_pct,fridge_pct,hot_water_pct,essentials_pct,washer_pct,avg_bathrooms,avg_bedrooms,listings_count" > output/q2.csv
+echo "maximum_nights,minimum_nights,cancellation_policy,review_scores_rating,price,price_bucket" > output/q2.csv
 hdfs dfs -cat ./project/output/q2/* >> output/q2.csv
 head -n 10 output/q2.csv
 
-echo "host_has_profile_pic,host_is_superhost,host_identity_verified,avg_rating,avg_price,listings_count" > output/q3.csv
+echo "review_scores_rating,price,verification_status" > output/q3.csv
 hdfs dfs -cat ./project/output/q3/* >> output/q3.csv
 head -n 10 output/q3.csv
 
-echo "month,property_type,min_price,avg_price,max_price" > output/q4.csv
+echo "month,property_type,room_type,price,review_scores_rating,property_description,in_top_property,in_top_property_room" > output/q4.csv
 hdfs dfs -cat ./project/output/q4/* >> output/q4.csv
 head -n 10 output/q4.csv
 
-echo "bucket_num,bucket_min_price,bucket_max_price,strategy,count_listings,avg_rating,avg_rating" > output/q5.csv
+echo "review_scores_rating,host_response_time,price_bucket,host_response_rate_bucket" > output/q5.csv
 hdfs dfs -cat ./project/output/q5/* >> output/q5.csv
 head -n 10 output/q5.csv
 
-echo "latitude,longitude,price" > output/q6.csv
+echo "latitude,longitude,price,review_scores_rating,neighbourhood,in_top_price,in_top_rating" > output/q6.csv
 hdfs dfs -cat ./project/output/q6/* >> output/q6.csv
 head -n 10 output/q6.csv
+
+echo "review_scores_rating,price,month,amenity_status" > output/q7.csv
+hdfs dfs -cat ./project/output/q7/* >> output/q7.csv
+head -n 10 output/q7.csv
