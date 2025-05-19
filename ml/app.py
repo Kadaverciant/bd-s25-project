@@ -257,6 +257,7 @@ cv = CrossValidator(
     estimatorParamMaps=paramGrid,
     evaluator=evaluator,
     numFolds=3,
+    collectSubModels=True
 )
 
 
@@ -264,7 +265,7 @@ cv = CrossValidator(
 cv_model = cv.fit(train_df)
 best_model = cv_model.bestModel
 best_model.save(model_path)
-
+print(cv_model.subModels)
 predictions = best_model.transform(test_df)
 predictions.select("review_scores_rating", "prediction").coalesce(1).write.mode(
     "overwrite",
@@ -298,6 +299,7 @@ cv_rf = CrossValidator(
     estimatorParamMaps=paramGrid_rf,
     evaluator=evaluator_rf,
     numFolds=3,
+    collectSubModels=True
 )
 
 cv_model_rf = cv_rf.fit(train_df)
