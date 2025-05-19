@@ -9,18 +9,18 @@ An **S25 Big Data Project**
 
 ---
 
-## 📚 Table of Contents
+## Table of Contents
 
-- [📌 Contributors](#-contributors)
-- [💼 Requirements](#-requirements)
-- [🚀 Before You Start](#-before-you-start)
-- [⚡ Quick Start](#-quick-start)
-- [🗂️ Repository Structure](#️-repository-structure)
-- [📬 Contact](#-contact)
+- [Contributors](#contributors)
+- [Requirements](#requirements)
+- [Before You Start](#before-you-start)
+- [Quick Start](#quick-start)
+- [Repository Structure](#repository-structure)
+- [Contact](#contact)
 
 ---
 
-## 📌 Contributors
+## Contributors
 
 - Dmitry Beresnev — [d.beresnev@innopolis.university](mailto:d.beresnev@innopolis.university)
 - Vsevolod Klyushev — [v.klyushev@innopolis.university](mailto:v.klyushev@innopolis.university)
@@ -28,15 +28,15 @@ An **S25 Big Data Project**
 
 ---
 
-## 💼 Requirements
+## Requirements
 
-- ✅ Tested on **Linux**
-- 🐍 Requires **Python 3.11+**
-- 💽 Requires **HDFS** and **Hive/SQL engines**
+- Tested on **Linux**
+- Requires **Python 3.11+**
+- Requires **HDFS** and **Hive/SQL engines**
 
 ---
 
-## 🚀 Before You Start
+## Before You Start
 
 Ensure you have added your PostgreSQL password to `secrets/.psql.pass`
 
@@ -47,7 +47,7 @@ Make sure you have:
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 You can start via one simple command:
 
@@ -57,7 +57,7 @@ bash scripts/main.sh
 
 ---
 
-## 🗂️ Repository Structure
+## Repository Structure
 
 ```text
 .
@@ -105,6 +105,6 @@ bash scripts/main.sh
 
 ---
 
-## 📬 Contact
+## Contact
 
 If you have any questions, feel free to reach out via the university emails listed above.
