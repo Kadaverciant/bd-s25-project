@@ -27,22 +27,27 @@ from pyspark.sql.functions import (
 
 def extract_cv_metrics(cv_model, test_df, evaluator, mae_evaluator, model_name=""):
     results = []
-    for i, model in enumerate(cv_model.getEstimatorParamMaps()):
-        trained_model = cv_model.subModels[i][
-            0
-        ] 
+    param_maps = cv_model.getEstimatorParamMaps()
+    sub_models = cv_model.subModels
+
+    for i, model_params in enumerate(param_maps):
+        if sub_models is not None and i < len(sub_models):
+            trained_model = sub_models[i][0]
+        else:
+            continue
 
         predictions = trained_model.transform(test_df)
         rmse = evaluator.evaluate(predictions)
         mae = mae_evaluator.evaluate(predictions)
 
-        params_dict = {param.name: trained_model.getOrDefault(param) for param in model}
+        params_dict = {param.name: trained_model.getOrDefault(param) for param in model_params}
         params_dict["rmse"] = rmse
         params_dict["mae"] = mae
-        params_dict["model_name"] = model_name
+        params_dict["model"] = model_name
         results.append(params_dict)
 
     return results
+
 
 
 class GeoToECEFTransformer(Transformer):
