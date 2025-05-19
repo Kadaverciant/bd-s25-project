@@ -1,7 +1,7 @@
 import os
 import shutil
 import subprocess
-
+import sys
 import pyspark.sql.functions as F
 from pyspark.ml import Pipeline, Transformer
 from pyspark.ml.evaluation import RegressionEvaluator
@@ -23,6 +23,11 @@ from pyspark.sql.functions import (
     sqrt,
     to_date,
 )
+
+spark_home = os.environ.get('SPARK_HOME', None)
+if spark_home:
+    sys.path.insert(0, os.path.join(spark_home, 'python'))
+    sys.path.insert(0, os.path.join(spark_home, 'python/lib/py4j-0.10.9.3-src.zip'))
 
 
 def extract_cv_metrics(cv_model, test_df, evaluator, mae_evaluator, model_name=""):
@@ -73,6 +78,24 @@ class GeoToECEFTransformer(Transformer):
         z = (N * (1 - e_sq) + alt) * sin(lat_rad)
 
         return df.withColumn("x", x).withColumn("y", y).withColumn("z", z)
+
+
+def hdfs_delete_if_exists(hdfs_path) -> None:
+    subprocess.call(["hdfs", "dfs", "-rm", "-r", "-f", hdfs_path])
+
+model_path = "project/models/model1"
+model_path2 = "project/models/model2"
+
+
+
+hdfs_delete_if_exists(model_path)
+hdfs_delete_if_exists(model_path2)
+
+if os.path.exists(model_path):
+    shutil.rmtree(model_path)
+
+if os.path.exists(model_path2):
+    shutil.rmtree(model_path2)
 
 
 warehouse = "project/hive/warehouse"
@@ -240,22 +263,6 @@ cv = CrossValidator(
     numFolds=3,
 )
 
-model_path = "project/models/model1"
-model_path2 = "project/models/model2"
-
-
-def hdfs_delete_if_exists(hdfs_path) -> None:
-    subprocess.call(["hdfs", "dfs", "-rm", "-r", "-f", hdfs_path])
-
-
-hdfs_delete_if_exists(model_path)
-hdfs_delete_if_exists(model_path2)
-
-if os.path.exists(model_path):
-    shutil.rmtree(model_path)
-
-if os.path.exists(model_path2):
-    shutil.rmtree(model_path2)
 
 
 cv_model = cv.fit(train_df)
