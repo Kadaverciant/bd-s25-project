@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS q2_results;
 
 CREATE TABLE q2_results AS
 SELECT
-    maximum_nights,
+    MAX(maximum_nights, 30),
 	minimum_nights,
     cancellation_policy,
     review_scores_rating,
