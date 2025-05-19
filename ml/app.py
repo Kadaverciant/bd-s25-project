@@ -25,35 +25,31 @@ from pyspark.sql.functions import (
 )
 
 
-def extract_cv_metrics_full(cv_model, test_df, rmse_evaluator, mae_evaluator, model_name=""):
+def evaluate_cv_model(cv_model, test_df, evaluator_rmse, evaluator_mae, model_name=""):
+    results = []
     param_maps = cv_model.getEstimatorParamMaps()
     sub_models = cv_model.subModels
 
-    results = []
+    if not sub_models:
+        return []
 
     for i, param_map in enumerate(param_maps):
-        param_str = ", ".join(f"{param.name}={param_map[param]}" for param in param_map)
+        try:
+            model = sub_models[i][0]  # берём первую модель folds
+            predictions = model.transform(test_df)
+            rmse = evaluator_rmse.evaluate(predictions)
+            mae = evaluator_mae.evaluate(predictions)
 
-        rmses = []
-        maes = []
+            param_str = ", ".join(f"{param.name}={param_map[param]}" for param in param_map)
 
-        for fold_model in sub_models[i]:
-            predictions = fold_model.transform(test_df)
-            rmse = rmse_evaluator.evaluate(predictions)
-            mae = mae_evaluator.evaluate(predictions)
-            rmses.append(rmse)
-            maes.append(mae)
-
-        avg_rmse = sum(rmses) / len(rmses) if rmses else None
-        avg_mae = sum(maes) / len(maes) if maes else None
-
-        results.append(Row(
-            model=model_name,
-            params=param_str,
-            rmse=avg_rmse,
-            mae=avg_mae,
-        ))
-
+            results.append(Row(
+                model=model_name,
+                params=param_str,
+                rmse=rmse,
+                mae=mae,
+            ))
+        except Exception as e:
+            print(e)
     return results
 
 
@@ -131,7 +127,7 @@ df = df.dropna(subset=["review_scores_rating"])
 
 df = df.withColumn("host_since", to_date(col("host_since").cast("string"), "yyyyMMdd"))
 df = df.filter(col("review_scores_rating").isNotNull())
-df = df.sample(fraction = 0.001)
+df = df.sample(fraction = 0.0001)
 
 split_amenities = SQLTransformer(
     statement="""
@@ -391,20 +387,19 @@ all_feat_df = lr_feat_df.unionByName(rf_feat_df)
 
 # all_feat_df.write.mode("overwrite").saveAsTable("team1_projectdb.feature_importance")
 
-
-lr_results = extract_cv_metrics_full(
+lr_results = evaluate_cv_model(
     cv_model=cv_model,
     test_df=test_df,
-    rmse_evaluator=evaluator,
-    mae_evaluator=mae_evaluator,
+    evaluator_rmse=evaluator,
+    evaluator_mae=mae_evaluator,
     model_name="LinearRegression",
 )
 
-rf_results = extract_cv_metrics_full(
+rf_results = evaluate_cv_model(
     cv_model=cv_model_rf,
     test_df=test_df,
-    rmse_evaluator=evaluator_rf,
-    mae_evaluator=mae_evaluator,
+    evaluator_rmse=evaluator_rf,
+    evaluator_mae=mae_evaluator,
     model_name="RandomForest",
 )
 
