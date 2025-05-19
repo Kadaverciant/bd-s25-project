@@ -17,7 +17,7 @@ top_rating_neighbourhoods AS (
     WHERE neighbourhood IS NOT NULL
     GROUP BY neighbourhood
     ORDER BY criterion DESC
-    LIMIT 10
+    LIMIT 30
 )
 SELECT
     r.latitude,
