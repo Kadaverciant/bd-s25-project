@@ -40,28 +40,18 @@ def extract_cv_metrics(cv_model, test_df, evaluator, mae_evaluator, model_name="
         rmse = evaluator.evaluate(predictions)
         mae = mae_evaluator.evaluate(predictions)
 
-        # Универсальные поля
-        result = {
-            "model": model_name,
-            "rmse": rmse,
-            "mae": mae,
-            # Параметры по умолчанию
-            "regParam": None,
-            "elasticNetParam": None,
-            "numTrees": None,
-            "maxDepth": None,
-        }
+        # Преобразуем параметры в строку
+        param_str = ", ".join(
+            f"{param.name}={trained_model.getOrDefault(param)}"
+            for param in model_params
+        )
 
-        if "regParam" in trained_model.extractParamMap():
-            result["regParam"] = trained_model.getOrDefault("regParam")
-        if "elasticNetParam" in trained_model.extractParamMap():
-            result["elasticNetParam"] = trained_model.getOrDefault("elasticNetParam")
-        if "numTrees" in trained_model.extractParamMap():
-            result["numTrees"] = trained_model.getOrDefault("numTrees")
-        if "maxDepth" in trained_model.extractParamMap():
-            result["maxDepth"] = trained_model.getOrDefault("maxDepth")
-
-        results.append(Row(**result))
+        results.append(Row(
+            model=model_name,
+            params=param_str,
+            rmse=rmse,
+            mae=mae,
+        ))
 
     return results
 
