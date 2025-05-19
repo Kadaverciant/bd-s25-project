@@ -33,25 +33,34 @@ def evaluate_cv_model(cv_model, test_df, evaluator_rmse, evaluator_mae, model_na
     if not sub_models:
         return []
 
-    for i, param_map in enumerate(param_maps):
-        try:
-            model = sub_models[i][0]  # берём первую модель folds
-            predictions = model.transform(test_df)
-            rmse = evaluator_rmse.evaluate(predictions)
-            mae = evaluator_mae.evaluate(predictions)
+    num_folds = len(sub_models)
+    num_models = len(param_maps)
 
-            param_str = ", ".join(f"{param.name}={param_map[param]}" for param in param_map)
+    for i in range(num_models):
+        rmses = []
+        maes = []
+        for fold in range(num_folds):
+            try:
+                model = sub_models[fold][i]
+                predictions = model.transform(test_df)
+                rmses.append(evaluator_rmse.evaluate(predictions))
+                maes.append(evaluator_mae.evaluate(predictions))
+            except Exception as e:
+                print(f"Error in fold {fold}, param idx {i}: {e}")
 
-            results.append(Row(
-                model=model_name,
-                params=param_str,
-                rmse=rmse,
-                mae=mae,
-            ))
-        except Exception as e:
-            print(e)
+        avg_rmse = sum(rmses) / len(rmses) if rmses else None
+        avg_mae = sum(maes) / len(maes) if maes else None
+
+        param_map = param_maps[i]
+        param_str = ", ".join(f"{param.name}={param_map[param]}" for param in param_map)
+
+        results.append(Row(
+            model=model_name,
+            params=param_str,
+            rmse=avg_rmse,
+            mae=avg_mae,
+        ))
     return results
-
 
 
 class GeoToECEFTransformer(Transformer):
@@ -402,7 +411,6 @@ rf_results = evaluate_cv_model(
     evaluator_mae=mae_evaluator,
     model_name="RandomForest",
 )
-
 
 all_results = lr_results + rf_results
 # rows = [Row(**r) for r in all_results]
