@@ -315,7 +315,7 @@ print(f"Results for RF: RMSE: {rmse_rf}, MAE: {mae_rf} ")
 models = [[str(best_model), rmse, mae], [str(best_model_rf), rmse_rf, mae_rf]]
 
 df = spark.createDataFrame(models, ["model", "RMSE", "MAE"])
-df.show(truncate=False)
+# df.show(truncate=False)
 
 # Save it to HDFS
 df.coalesce(1).write.mode("overwrite").format("csv").option("sep", ",").option(
