@@ -208,7 +208,6 @@ encoders = [
 
 
 encoded_cols = [encoder.getOutputCol() for encoder in encoders]
-assembler_inputs = encoded_cols + boolean_cols + numerical_cols
 assembler_inputs = encoded_cols + boolean_cols + numerical_cols + ["amenities_vec"]
 
 assembler = VectorAssembler(inputCols=assembler_inputs, outputCol="features")
@@ -270,7 +269,8 @@ cv = CrossValidator(
 cv_model = cv.fit(train_df)
 best_model = cv_model.bestModel
 best_model.save(model_path)
-print(cv_model.subModels)
+
+
 predictions = best_model.transform(test_df)
 predictions.select("review_scores_rating", "prediction").coalesce(1).write.mode(
     "overwrite",
@@ -404,6 +404,5 @@ all_results = lr_results + rf_results
 rows = [Row(**r) for r in all_results]
 metrics_df = spark.createDataFrame(rows)
 
-metrics_df.show(truncate=False)
 
 metrics_df.write.mode("overwrite").saveAsTable("team1_projectdb.grid_search_results")
