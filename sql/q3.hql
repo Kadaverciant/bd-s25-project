@@ -22,7 +22,7 @@ WITH verification_combinations AS (
                 THEN 'verified_only'
             WHEN host_is_superhost
                 THEN 'superhost_only'
-            ELSE 'unverified'
+            ELSE 'no features'
         END AS verification_status
     FROM records_part
     WHERE review_scores_rating IS NOT NULL
