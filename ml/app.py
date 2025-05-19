@@ -25,32 +25,33 @@ from pyspark.sql.functions import (
 )
 
 
-def extract_cv_metrics(cv_model, test_df, evaluator, mae_evaluator, model_name=""):
-    results = []
+def extract_cv_metrics_full(cv_model, test_df, rmse_evaluator, mae_evaluator, model_name=""):
     param_maps = cv_model.getEstimatorParamMaps()
     sub_models = cv_model.subModels
 
-    for i, model_params in enumerate(param_maps):
-        if sub_models is not None and i < len(sub_models):
-            trained_model = sub_models[i][0]
-        else:
-            continue
+    results = []
 
-        predictions = trained_model.transform(test_df)
-        rmse = evaluator.evaluate(predictions)
-        mae = mae_evaluator.evaluate(predictions)
+    for i, param_map in enumerate(param_maps):
+        param_str = ", ".join(f"{param.name}={param_map[param]}" for param in param_map)
 
-        # Преобразуем параметры в строку
-        param_str = ", ".join(
-            f"{param.name}={trained_model.getOrDefault(param)}"
-            for param in model_params
-        )
+        rmses = []
+        maes = []
+
+        for fold_model in sub_models[i]:
+            predictions = fold_model.transform(test_df)
+            rmse = rmse_evaluator.evaluate(predictions)
+            mae = mae_evaluator.evaluate(predictions)
+            rmses.append(rmse)
+            maes.append(mae)
+
+        avg_rmse = sum(rmses) / len(rmses) if rmses else None
+        avg_mae = sum(maes) / len(maes) if maes else None
 
         results.append(Row(
             model=model_name,
             params=param_str,
-            rmse=rmse,
-            mae=mae,
+            rmse=avg_rmse,
+            mae=avg_mae,
         ))
 
     return results
@@ -391,21 +392,22 @@ all_feat_df = lr_feat_df.unionByName(rf_feat_df)
 # all_feat_df.write.mode("overwrite").saveAsTable("team1_projectdb.feature_importance")
 
 
-lr_results = extract_cv_metrics(
+lr_results = extract_cv_metrics_full(
     cv_model=cv_model,
     test_df=test_df,
-    evaluator=evaluator,
+    rmse_evaluator=evaluator,
     mae_evaluator=mae_evaluator,
     model_name="LinearRegression",
 )
 
-rf_results = extract_cv_metrics(
+rf_results = extract_cv_metrics_full(
     cv_model=cv_model_rf,
     test_df=test_df,
-    evaluator=evaluator_rf,
+    rmse_evaluator=evaluator_rf,
     mae_evaluator=mae_evaluator,
     model_name="RandomForest",
 )
+
 
 all_results = lr_results + rf_results
 # rows = [Row(**r) for r in all_results]
