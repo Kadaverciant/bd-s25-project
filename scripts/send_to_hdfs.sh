@@ -41,27 +41,27 @@ show_hdfs_size() {
 start_time=$(date +%s)
 
 echo "Start loading"
-sqoop import \
-  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
-  --username team1\
-  --password "$password" \
-  --as-parquetfile \
-  --warehouse-dir=$WAREHOUSE_FOLDER \
-  --m 1 \
-  --outdir "$(pwd)/output" \
-  --table records
-
 #sqoop import \
 #  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
 #  --username team1\
 #  --password "$password" \
-#  --compression-codec=snappy \
-#  --compress \
-#  --as-avrodatafile \
+#  --as-parquetfile \
 #  --warehouse-dir=$WAREHOUSE_FOLDER \
 #  --m 1 \
 #  --outdir "$(pwd)/output" \
 #  --table records
+
+sqoop import \
+  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
+  --username team1\
+  --password "$password" \
+  --compression-codec=snappy \
+  --compress \
+  --as-avrodatafile \
+  --warehouse-dir=$WAREHOUSE_FOLDER \
+  --m 1 \
+  --outdir "$(pwd)/output" \
+  --table records
 
 #sqoop import \
 #  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
