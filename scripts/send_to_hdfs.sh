@@ -51,35 +51,35 @@ echo "Start loading"
 #  --outdir "$(pwd)/output" \
 #  --table records
 
-#sqoop import \
-#  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
-#  --username team1\
-#  --password "$password" \
-#  --compression-codec=snappy \
-#  --compress \
-#  --as-avrodatafile \
-#  --warehouse-dir=$WAREHOUSE_FOLDER \
-#  --m 1 \
-#  --outdir "$(pwd)/output" \
-#  --table records
-
 sqoop import \
   --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
   --username team1\
   --password "$password" \
-  --compression-codec=bzip2 \
+  --compression-codec=snappy \
   --compress \
   --as-avrodatafile \
   --warehouse-dir=$WAREHOUSE_FOLDER \
   --m 1 \
-  --outdir "$(pwd)/outputs" \
+  --outdir "$(pwd)/output" \
   --table records
+
+#sqoop import \
+#  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
+#  --username team1\
+#  --password "$password" \
+#  --compression-codec=bzip2 \
+#  --compress \
+#  --as-avrodatafile \
+#  --warehouse-dir=$WAREHOUSE_FOLDER \
+#  --m 1 \
+#  --outdir "$(pwd)/outputs" \
+#  --table records
 
 end_time=$(date +%s)
 execution_time=$((end_time - start_time))
 
-#hdfs dfs -mkdir -p "$WAREHOUSE_FOLDER/avsc"
-#hdfs dfs -put -f output/*.avsc "$WAREHOUSE_FOLDER/avsc"
+hdfs dfs -mkdir -p "$WAREHOUSE_FOLDER/avsc"
+hdfs dfs -put -f output/*.avsc "$WAREHOUSE_FOLDER/avsc"
 
 echo "Sqoop import completed in $execution_time seconds"
 show_hdfs_size "$WAREHOUSE_FOLDER"
