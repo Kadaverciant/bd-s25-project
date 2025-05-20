@@ -51,29 +51,29 @@ echo "Start loading"
 #  --outdir "$(pwd)/output" \
 #  --table records
 
-sqoop import \
-  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
-  --username team1\
-  --password "$password" \
-  --compression-codec=snappy \
-  --compress \
-  --as-avrodatafile \
-  --warehouse-dir=$WAREHOUSE_FOLDER \
-  --m 1 \
-  --outdir "$(pwd)/output" \
-  --table records
-
 #sqoop import \
 #  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
 #  --username team1\
 #  --password "$password" \
-#  --compression-codec=bzip2 \
+#  --compression-codec=snappy \
 #  --compress \
 #  --as-avrodatafile \
 #  --warehouse-dir=$WAREHOUSE_FOLDER \
 #  --m 1 \
-#  --outdir "$(pwd)/outputs" \
+#  --outdir "$(pwd)/output" \
 #  --table records
+
+sqoop import \
+  --connect "jdbc:postgresql://hadoop-04.uni.innopolis.ru/team1_projectdb" \
+  --username team1\
+  --password "$password" \
+  --compression-codec=bzip2 \
+  --compress \
+  --as-avrodatafile \
+  --warehouse-dir=$WAREHOUSE_FOLDER \
+  --m 1 \
+  --outdir "$(pwd)/outputs" \
+  --table records
 
 end_time=$(date +%s)
 execution_time=$((end_time - start_time))
