@@ -79,8 +79,8 @@ As a part of the project, we were required to test different data compression to
     \toprule
     Tool                   & {Memory, Mb}  & {Build Time, seconds} \\
     \midrule
-    \textbf{parquet}       & 122.4         & \textbf{23.8}         \\
-    \textbf{avro + snappy} & 47.2          & 27.6                  \\
+    \textbf{parquet}       & 47.2          & 27.6                  \\
+    \textbf{avro + snappy} & 122.4         & \textbf{23.8}         \\
     \textbf{avro + bzip2}  & \textbf{21.4} & 56.7                  \\
     \bottomrule
   \end{tabular}
@@ -88,4 +88,4 @@ As a part of the project, we were required to test different data compression to
 
 You can notice that there is only one row for \texttt{parquet}, while for \texttt{avro} two approaches were tested. The thing is that \texttt{parquet} is not compatible with \texttt{bzip2}, so only combination \texttt{parquet+snappy} was tested.
 
-As a result, the \texttt{avro+snappy} was selected as the most suitable option, because it offer the better time/resulting size tradeoff.
+As a result, the \texttt{parquet} was selected as the most suitable option, because it offer the better time/resulting size tradeoff.
