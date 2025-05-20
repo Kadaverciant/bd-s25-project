@@ -1,49 +1,78 @@
-\section{Contributions and Reflections on own work }
-\label{chap:contributionsAndReflectionOnOwnWork}
+\section{Contributions and Reflections on own work }\label{chap:contributionsAndReflectionOnOwnWork}
 
 The authors of this report and the contributors of the project are presented in \Cref{tab:contributions}. (\textbf{Fill in the contributions table.})
 
 
 \begin{table}[h!]
-\footnotesize
-    \centering
-    \begin{tabular}{|l||c|c|c|}
-\toprule
- Stages & \begin{minipage}{0.2\textwidth} Student 1 Dmitry Beresnev \end{minipage} & \begin{minipage}{0.2\textwidth} Student 2 Vsevolod Kliushev\end{minipage} & \begin{minipage}{0.2\textwidth} Student 3 Nikita Yaneev \end{minipage} \\
- \midrule
- Role & ML engineer & Data engineer & Data Analyst \\
- \midrule
- \textbf{Introduction} & 40\% & 30\% & 30\%  \\
- \textbf{Business understanding} & 30\% & 40\% & 30\% \\
- \textbf{Data understanding} & 20\% & 60\% & 20\% \\
- \textbf{Data preparation} & 20\% & 50\% & 30\% \\
- \textbf{Modeling} & 45\% & 10\% & 45\% \\
- \textbf{Evaluation} & 45\% & 10\% & 45\% \\
- \textbf{Deployment} & 0\%& 0\% & 0\% \\
- \midrule
-\textbf{Project Stage I} & 33\% & 34\% & 33\% \\
-\textbf{Project Stage II} & 34\% & 33\% & 33\% \\
-\textbf{Project Stage III} & 33\% & 33\% & 34\% \\
-\textbf{Project Stage IV} & 33.(3)\% & 33.(3)\% & 33.(3)\% \\
-% \midrule
-% \textbf{Total} & 1 & 1 & \\
- \bottomrule
-    \end{tabular}
-    \caption{Contributions table}
-    \label{tab:contributions}
+  \footnotesize
+  \centering
+  \begin{tabular}{|l||c|c|c|}
+    \toprule
+    Stages                          & \begin{minipage}{0.2\textwidth} Student 1 Dmitry Beresnev \end{minipage} & \begin{minipage}{0.2\textwidth} Student 2 Vsevolod Kliushev\end{minipage} & \begin{minipage}{0.2\textwidth} Student 3 Nikita Yaneev \end{minipage} \\
+    \midrule
+    Role                            & ML engineer                                                              & Data engineer                                                             & Data Analyst                                                           \\
+    \midrule
+    \textbf{Introduction}           & 40\%                                                                     & 30\%                                                                      & 30\%                                                                   \\
+    \textbf{Business understanding} & 30\%                                                                     & 40\%                                                                      & 30\%                                                                   \\
+    \textbf{Data understanding}     & 20\%                                                                     & 60\%                                                                      & 20\%                                                                   \\
+    \textbf{Data preparation}       & 20\%                                                                     & 50\%                                                                      & 30\%                                                                   \\
+    \textbf{Modeling}               & 45\%                                                                     & 10\%                                                                      & 45\%                                                                   \\
+    \textbf{Evaluation}             & 45\%                                                                     & 10\%                                                                      & 45\%                                                                   \\
+    \textbf{Deployment}             & 0\%                                                                      & 0\%                                                                       & 0\%                                                                    \\
+    \midrule
+    \textbf{Project Stage I}        & 33\%                                                                     & 34\%                                                                      & 33\%                                                                   \\
+    \textbf{Project Stage II}       & 34\%                                                                     & 33\%                                                                      & 33\%                                                                   \\
+    \textbf{Project Stage III}      & 33\%                                                                     & 33\%                                                                      & 34\%                                                                   \\
+    \textbf{Project Stage IV}       & 33.3\%                                                                   & 33.3\%                                                                    & 33.3\%                                                                 \\
+    % \midrule
+    % \textbf{Total} & 1 & 1 & \\
+    \bottomrule
+  \end{tabular}
+  \caption{Contributions table}\label{tab:contributions}
 \end{table}
-% \begin{xtabular}{|l || r r |r|} 
- % 
-% \end{xtabular}
 
 
-\subsection{Report summary }
-Write a summary of your report.
+
+\subsection{Report summary}
+
+\subsubsection*{Problem Formulation and Scoping}
+We had not reformulated the problem itself during the work. Initially we decided to use only subset of the original dataset.
+However, we faced with problem with big number of undefined values: after filtering them the dataset becomes too small to satisfy project requirements. So we have decided to use the whole initial dataset, so after filtering undefined values, it size remains acceptable.
+
+
+\subsubsection*{Knowledge Search for Business Problem Scoping}
+The primary approach to scoping the business problem involved identifying a suitable proxy for real-world data. The selection of the Airbnb Rio de Janeiro dataset was crucial, as it provided a rich source of listings with features (price, location, amenities, host details) and historical review scores analogous to what our new aggregator would eventually handle. The CRISP-DM methodology, referenced in the document, guided the structured approach to understanding the business needs and translating them into data mining objectives.
+
+\subsubsection*{Implementation, Testing, and Validation of Results}
+
+\paragraph{Implementation}
+The project uses a data pipeline involving HQL for initial exploration and Python for initial data preparation (cleaning, feature selection, construction of new features like binary amenity indicators from a complex text field). Modeling was performed via PySpark using Linear Regression and Random Forest Regressors, with preprocessing steps including One-Hot Encoding for categorical variables, word2vec for amenities, and ECEF coordinate transformation for geolocation data.
+
+\paragraph{Testing}
+Models were evaluated on an 80/20 train-test split using Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE) as key performance metrics
+
+\paragraph{Validation}
+Cross-validation and grid search were employed during model building to optimize hyperparameters (e.g., tree depth for Random Forest, regularization parameters for Linear Regression) and ensure generalization to unseen data, mitigating overfitting. The Random Forest model ultimately achieved an RMSE of 8.28 and MAE of 5.34.
+
+\subsubsection*{Helpful Sources}
+The Kaggle dataset `Airbnb Price Prediction in Rio de Janeiro'~\cite{airbnb_rio_kaggle} was the foundational resource, providing all the data for analysis and modeling. The CRISP-DM methodology~\cite{crispdm2000} provided a structured framework for the entire data mining process, from business understanding to deployment considerations. The specified software stack (Python, PySpark, Hadoop, Hive, PostgreSQL, etc.) enabled the practical execution of data processing and machine learning tasks.
+
+\subsubsection*{What We Would Do Differently }
+
+\paragraph{Earlier, More Rigorous Data Quality Assessment}
+We have faced with data quality issues, such as every row having nulls and nearly half the dataset missing the target variable (review\_scores\_rating). A more intensive initial data audit could have led to faster decisions on imputation strategies, necessary data filtering, or even exploring supplementary data sources earlier.
+
+\paragraph{Deeper Model Engeenering}
+Given more resources, we would have explored Deep Neural Networks or more complex ensemble methods, like MLP and SVM
+
+\paragraph{Deeper Feature Engineering for Complex Fields}
+The amenities column, with over 180 unique entries, was complex. While binary indicators for the top 20 were created, exploring more sophisticated NLP techniques or embedding methods for this feature from the outset might have yielded better insights and model performance more quickly.
+
+\paragraph{More Diverse Dataset}Maybe it would be good idea to incorporate other datasets to original one (for example, for cities near to Rio de Janeiro).
+
+
+\subsubsection*{Other Changes to the Project}
+
 \begin{itemize}
-    \item Describe how you decided to scope (and/or re-scope) your problem formulation during the work, and given the data you had access to.
-    \item Describe how you searched for knowledge on how to scope the business problem you wanted to address. 
-    \item understand how to implement, test, and validate your results. 
-    \item Which sources helped you to get progress and how?
-    \item What would you have done differently if you were to start over again, for understanding the problem faster and for understanding what could be done with the data you had access to?
-    \item What else is there that you would have changed about this project?
+  \item We would propose to add some GPU to cluster
 \end{itemize}

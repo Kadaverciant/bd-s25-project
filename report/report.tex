@@ -40,53 +40,53 @@
 
 % Beginning of the document
 \begin{document}
-    % Title page and unnumbered sections
-    \input{sections/00_front_page}
-    % \input{sections/00_abstract}
+% Title page and unnumbered sections
+\input{sections/00_front_page}
+% \input{sections/00_abstract}
 
-    % Index of the document and figures
-    \begingroup
-        % Links are normally blue, but indexes are set to black
-        % so that everything does not appear blue
-        \hypersetup{linkcolor=black}
-        \tableofcontents
-        %\listoffigures % uncomment to display list of code
-        %\lstlistoflistings % uncomment to display list of code
-    \endgroup
+% Index of the document and figures
+\begingroup
+% Links are normally blue, but indexes are set to black
+% so that everything does not appear blue
+\hypersetup{linkcolor=black}
+\tableofcontents
+%\listoffigures % uncomment to display list of code
+%\lstlistoflistings % uncomment to display list of code
+\endgroup
 
-    % Change page number style to normal
-    \clearpage\pagenumbering{arabic}
+% Change page number style to normal
+\clearpage\pagenumbering{arabic}
 
-    % \textbf{Note:} \href{https://moodle.innopolis.university/mod/folder/view.php?id=124043}{Follow this Moodle link for more info on CRISP-DM shared by Armen}
+% \textbf{Note:} \href{https://moodle.innopolis.university/mod/folder/view.php?id=124043}{Follow this Moodle link for more info on CRISP-DM shared by Armen}
 
-    % Sections and chapters
-    \input{sections/00_Introduction}
-    \newpage
-    \input{sections/01_Business_Understanding}
-    \newpage
-    \input{sections/02_Data_Understanding}
-    \newpage
-    \input{sections/03_Data_Preparation}
-    \newpage
-    \input{sections/04_Modeling}
-    \newpage
-    \input{sections/05_Evaluation}
-    \newpage
-    \input{sections/06_Deployment}
-    \newpage
-    \input{sections/07_Contributions_Reflections}
+% Sections and chapters
+\input{sections/00_Introduction}
+\newpage
+\input{sections/01_Business_Understanding}
+\newpage
+\input{sections/02_Data_Understanding}
+\newpage
+\input{sections/03_Data_Preparation}
+\newpage
+\input{sections/04_Modeling}
+\newpage
+\input{sections/05_Evaluation}
+\newpage
+\input{sections/06_Deployment}
+\newpage
+\input{sections/07_Contributions_Reflections}
 
-    \newpage
-    \section*{References}
-    % Bibliography
-    \renewcommand{\bibsection}{}
-    \bibliographystyle{plainnat}
-    \bibliography{bibliography.bib}
+\newpage
+\section*{References}
+% Bibliography
+\renewcommand{\bibsection}{}
+\bibliographystyle{plainnat}
+\bibliography{bibliography.bib}
 
 
-    % \input
-    % \newpage
-    % \appendix
-    % \input{sections/appendix}
+\input
+\newpage
+\appendix
+\input{sections/appendix}
 % End of the document
 \end{document}
