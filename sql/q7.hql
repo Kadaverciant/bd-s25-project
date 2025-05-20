@@ -49,5 +49,4 @@ SELECT
 	price,
 	month,
 	amenity_status
-FROM amenity_combinations
-WHERE amenity_status != 'no_amenities';
+FROM amenity_combinations;
