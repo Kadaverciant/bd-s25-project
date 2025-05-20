@@ -47,13 +47,12 @@ This section explores how booking restrictions (minimum/maximum nights), pricing
 \vspace{0.5em}
 \paragraph{Key insights}
 \begin{itemize}
-    \item Higher Prices, Generally Higher Scores (Across Policies): For most cancellation policies, the most expensive listings (2000+ dollars) tend to have the highest review scores. This suggests that price often correlates with quality/amenities that drive satisfaction, somewhat independently of the cancellation policy itself.
-    \item Super Strict Policies loose: \texttt{super\_strict\_30} and \texttt{super\_strict\_60} tend to have scores lower than \texttt{moderate} or \texttt{flexible,} particularly for budget listings. This is a key finding --- a very strict policy on a mid-priced item might be perceived negatively.
-    \item Moderate Policies Perform Well: \texttt{moderate} and \texttt{strict\_14\_with\_grace\_period} policies, particularly for listings priced 1000--1999\$ and 2000\$+, show very high average scores (often above 95.5\%--96\%). \texttt{Flexible} also performs strongly across price bands.
-    \item Price Correlates with a Stay Length: there is a clear trend: as the price of the listing increases, both the typical minimum and maximum number of booking nights also tend to increase.
-    \item Review Score with a Stay Length: another clear trend is that as the stay length of the listing increases, mean review score also increases. Also, there is a noticeable `phase transition' between 100--499\$ and 500--999\$ clusters: mean review score has here drastic increase.
+    \item \textbf{Higher Prices, Generally Higher Scores (Across Policies):} For most cancellation policies, the most expensive listings (2000+ dollars) tend to have the highest review scores. This suggests that price often correlates with quality/amenities that drive satisfaction, somewhat independently of the cancellation policy itself.
+    \item \textbf{Super Strict Policies loose:} \texttt{super\_strict\_30} and \texttt{super\_strict\_60} tend to have scores lower than \texttt{moderate} or \texttt{flexible,} particularly for budget listings. This is a key finding --- a very strict policy on a mid-priced item might be perceived negatively.
+    \item \textbf{Moderate Policies Perform Well:} \texttt{moderate} and \texttt{strict\_14\_with\_grace\_period} policies, particularly for listings priced 1000--1999\$ and 2000\$+, show very high average scores (often above 95.5\%--96\%). \texttt{Flexible} also performs strongly across price bands.
+    \item \textbf{Price Correlates with a Stay Length:} there is a clear trend: as the price of the listing increases, both the typical minimum and maximum number of booking nights also tend to increase.
+    \item \textbf{Review Score with a Stay Length:} another clear trend is that as the stay length of the listing increases, mean review score also increases. Also, there is a noticeable `phase transition' between 100--499\$ and 500--999\$ clusters: mean review score has here drastic increase.
 \end{itemize}
-
 
 
 \subsubsection*{3. Host Verification Features and Their Impact}
@@ -69,14 +68,6 @@ Here we examine how different host verification combinations affect guest rating
     \item Interestingly, fully\_featured hosts (with all three attributes) do not significantly outperform hosts with just a picture or superhost status
 \end{itemize}
 
-\subsubsection*{Overall Findings and Impact}
-
-These initial analyses provided several useful directions:
-\begin{itemize}
-    \item Identified key variables influencing pricing and satisfaction.
-    \item Helped define valuable subpopulations (e.g., fully verified hosts).
-    \item Offered a data-driven basis for later feature engineering and model design.
-\end{itemize}
 
 \subsubsection*{4. Popular Property and Room Type Analysis Over Time (Query 4)}
 
@@ -91,11 +82,11 @@ Additionally, we construct a descriptive label combining room type and property 
 \vspace{0.5em}
 \paragraph{Key insights}
 \begin{itemize}
-    \item Property Type Matters for Scores: for example,`Guest suite',`Loft' and`Townhouse' consistently achieve the highest review scores.
+    \item \textbf{Property Type Matters for Scores:} for example,`Guest suite',`Loft' and`Townhouse' consistently achieve the highest review scores.
     \item Room Type is a Major Driver of Scores: while`Private room' consistently receives the highest scores, the`Shared room' and`Hotel room' receive significantly lower review scores.
-    \item Winning Combinations for High Scores: combinations`Private room in Condominium' and`Private room in Apartment' consistently yields exceptionally higher scores.
-    \item Price and Score Relationship: the most expensive popular options are typically`Entire home/apt' in House and in Apartment. While they score well, they don't consistently outperform the`Private room in Condominium/Apartment' in terms of guest scores. This suggests that while guests are willing to pay more for entire spaces, the quality in well-managed private rooms within desirable property types can lead to even higher scores.
-    \item Seasonality Impact on Prices: prices for popular combinations show slight seasonal fluctuations. Prices during local fall and winter are slightly higher.
+    \item \textbf{Winning Combinations for High Scores:} combinations`Private room in Condominium' and`Private room in Apartment' consistently yields exceptionally higher scores.
+    \item \textbf{Price and Score Relationship:} the most expensive popular options are typically`Entire home/apt' in House and in Apartment. While they score well, they don't consistently outperform the`Private room in Condominium/Apartment' in terms of guest scores. This suggests that while guests are willing to pay more for entire spaces, the quality in well-managed private rooms within desirable property types can lead to even higher scores.
+    \item \textbf{Seasonality Impact on Prices:} prices for popular combinations show slight seasonal fluctuations. Prices during local fall and winter are slightly higher.
 
 \end{itemize}
 
@@ -107,17 +98,17 @@ This analysis investigates how host responsiveness (response time and response r
 \vspace{0.5em}
 \paragraph{Key insights}
 \begin{itemize}
-    \item Faster is Generally Better: Across most price categories (except premium 2000\$+ segment), faster host response times correlate with higher review scores. Scores tend to decrease as response time lengthens to `within a day' and further to `a few days or more'.
-    \item Unusual Premium Pattern for Response Time: The 2000\$ category shows a slightly unusual pattern: the `a few days or more' category surprisingly has the highest average score. This could be due to a smaller sample size in this specific high-end segment for slow responders, or perhaps the hosts of this segment just do not communicate with the most of customers, preferring small number of elites.
-    \item Higher Response Rate Mean Higher Scores: This shows a quite strong and consistent positive correlation. The more consistently a host responds, the higher their review scores, almost regardless of the listing's price.
+    \item \textbf{Faster is Generally Better:} Across most price categories (except premium 2000\$+ segment), faster host response times correlate with higher review scores. Scores tend to decrease as response time lengthens to `within a day' and further to `a few days or more'.
+    \item \textbf{Unusual Premium Pattern for Response Time:} The 2000\$ category shows a slightly unusual pattern: the `a few days or more' category surprisingly has the highest average score. This could be due to a smaller sample size in this specific high-end segment for slow responders, or perhaps the hosts of this segment just do not communicate with the most of customers, preferring small number of elites.
+    \item \textbf{Higher Response Rate Mean Higher Scores:} This shows a quite strong and consistent positive correlation. The more consistently a host responds, the higher their review scores, almost regardless of the listing's price.
 \end{itemize}
 
 \subsubsection*{6. Geospatial Distribution of High-Value and Highly-Rated Neighborhoods}
 
 In this query, we geolocate listings and mark those belonging to:
 \begin{itemize}
-    \item Concentration of High Scores and Prices: Both the `Mean score map' and `Mean price map' show clear concentrations of higher values in specific areas, predominantly along the southern coastal strip of Rio de Janeiro (likely encompassing famous touristic areas). There's a strong visual similarity in the distribution patterns of high scores and high prices.
-    \item Overlap of Top Price and Top Score Neighborhoods: the overlap exists but is not strong. Most overlapping occurs in central regions of Rio de Janeiro, where both review scores and prices are high. The south-west part of the city is high-priced and (relatively) low-scoring, whilenorth past is, vice versa, low-priced but very high-scoring. So the key finding is that central neighborhoods `hidden-gems', so should have higher rating.
+    \item \textbf{Concentration of High Scores and Prices:} Both the `Mean score map' and `Mean price map' show clear concentrations of higher values in specific areas, predominantly along the southern coastal strip of Rio de Janeiro (likely encompassing famous touristic areas). There's a strong visual similarity in the distribution patterns of high scores and high prices.
+    \item \textbf{Overlap of Top Price and Top Score Neighborhoods:} the overlap exists but is not strong. Most overlapping occurs in central regions of Rio de Janeiro, where both review scores and prices are high. The south-west part of the city is high-priced and (relatively) low-scoring, whilenorth past is, vice versa, low-priced but very high-scoring. So the key finding is that central neighborhoods `hidden-gems', so should have higher rating.
 \end{itemize}
 
 This is useful for mapping `premium' vs `well-rated' areas (\Cref{fig:q6_1,fig:q6_2,fig:q6_3,fig:q6_4}).
@@ -137,16 +128,15 @@ This final analysis categorizes listings based on presence of key amenities: Wi-
 \vspace{0.5em}
 \paragraph{Key insights}
 \begin{itemize}
-    \item WiFi is Critical: Listings with WiFi, especially in combination with other key amenities like AC and a fridge, dominate the high scores. Even wifi\_only generally outperforms listings with only AC, only a fridge, or only hot water.
-    \item Air Conditioning (AC) is Highly Valued: Particularly when paired with WiFi. Given climate of Rio de Janeiro, this is unsurprising.
-    \item Hot Water is an Expectation: Its presence in `all\_amenities' contributes to high scores, but hotwater\_only scores poorly. This suggests it's a baseline necessity rather than a feature that elevates a listing if other desirable amenities are absent.
-    \item Seasonal Impact: There are minor monthly fluctuations for most combinations, but the overall ranking of amenity packages by score remains largely the same throughout the year. For example, the need for AC might be perceived as slightly less critical in cooler months, but listings with wifi\_ac still outperform those with just wifi\_only.
+    \item \textbf{WiFi is Critical:} Listings with WiFi, especially in combination with other key amenities like AC and a fridge, dominate the high scores. Even wifi\_only generally outperforms listings with only AC, only a fridge, or only hot water.
+    \item \textbf{Air Conditioning (AC) is Highly Valued:} Particularly when paired with WiFi. Given climate of Rio de Janeiro, this is unsurprising.
+    \item \textbf{Hot Water is an Expectation:} Its presence in `all\_amenities' contributes to high scores, but hotwater\_only scores poorly. This suggests it's a baseline necessity rather than a feature that elevates a listing if other desirable amenities are absent.
+    \item \textbf{Seasonal Impact:} There are minor monthly fluctuations for most combinations, but the overall ranking of amenity packages by score remains largely the same throughout the year. For example, the need for AC might be perceived as slightly less critical in cooler months, but listings with wifi\_ac still outperform those with just wifi\_only.
 \end{itemize}
 
 \subsection{Summary of Data Exploration}\label{sec:dataExplorationSummary}
 
 Further transformations and detailed exploration will build on these findings to enhance data quality and modeling performance.
-
 
 
 \subsection{Data quality}\label{sec:dataQuality}

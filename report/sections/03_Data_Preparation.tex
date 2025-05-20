@@ -67,3 +67,25 @@ This phase focuses on the generation of new attributes derived from existing one
 The \texttt{amenities} field originally contained over 180 unique entries in a single textual column, representing various features of each listing. To extract more actionable information, we analyzed the frequency of occurrence of these amenities and selected the 20 most common ones. Each selected amenity was transformed into a separate binary feature indicating its presence or absence in a given listing.
 
 This transformation enabled the model to better capture the impact of amenities on listing ratings and allowed for more interpretable feature importance in later stages of the project.
+
+\subsection{Data compression}\label{sec:dataCompression}
+As a part of the project, we were required to test different data compression tools and select the most suitable one. The results are presented in \Cref{tab:compression_comp}.
+
+\begin{table}[ht!]
+  \small
+  \centering
+  \caption{Comparison of models}\label{tab:compression_comp}
+  \begin{tabular}{lll}
+    \toprule
+    Tool                   & {Memory, Mb}  & {Build Time, seconds} \\
+    \midrule
+    \textbf{parquet}       & 122.4         & \textbf{23.8}         \\
+    \textbf{avro + snappy} & 47.2          & 27.6                  \\
+    \textbf{avro + bzip2}  & \textbf{21.4} & 56.7                  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+You can notice that there is only one row for \texttt{parquet}, while for \texttt{avro} two approaches were tested. The thing is that \texttt{parquet} is not compatible with \texttt{bzip2}, so only combination \texttt{parquet+snappy} was tested.
+
+As a result, the \textbf{LOL} was selected as the most suitable option, because \ldots.
