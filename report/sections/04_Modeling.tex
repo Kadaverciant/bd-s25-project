@@ -1,19 +1,19 @@
-\section{Modeling}
-\label{chap:modeling}
+\section{Modeling}\label{chap:modeling}
+
 This stage of the project focuses on applying machine learning techniques to the structured dataset in order to develop a predictive system for estimating listing ratings. The aim is to select a model that not only performs well statistically, but is also interpretable and practical for deployment in a real-world recommendation pipeline, particularly under cold-start conditions where historical data is absent.
 
 \subsection{Modeling techniques}
 To explore the modeling space, we trained and evaluated two distinct approaches:
 
-\textbf{Linear Regression } – A classic and widely used statistical model that assumes a linear relationship between the input features and the target variable. It serves as a strong baseline due to its simplicity, speed, and interpretability. Linear Regression attempts to fit a straight line that best describes the relationship between the predictors and the rating score..
+\textbf{Linear Regression } --- A classic and widely used statistical model that assumes a linear relationship between the input features and the target variable. It serves as a strong baseline due to its simplicity, speed, and interpretability. Linear Regression attempts to fit a straight line that best describes the relationship between the predictors and the rating score..
 
-\textbf{Random Forest Regressor } – A powerful ensemble method that aggregates multiple decision trees, capturing non-linear relationships and interactions between variables. It is well-suited for structured data and has strong generalization ability.
+\textbf{Random Forest Regressor } --- A powerful ensemble method that aggregates multiple decision trees, capturing non-linear relationships and interactions between variables. It is well-suited for structured data and has strong generalization ability.
 
 \paragraph{Preprocessing assumptions}
 \begin{itemize}
-    \item Categorical variables were transformed using One-Hot Encoding.
-    \item The string \texttt{amenities} field was vectorized using a pre-trained \texttt{word2vec} model to preserve semantic relationships.
-    \item Geolocation data was converted from latitude/longitude to ECEF coordinates to better encode spatial proximity.
+  \item Categorical variables were transformed using One-Hot Encoding.
+  \item The string \texttt{amenities} field was vectorized using a pre-trained \texttt{word2vec} model to preserve semantic relationships.
+  \item Geolocation data was converted from latitude/longitude to ECEF coordinates to better encode spatial proximity.
 \end{itemize}
 
 These transformations ensured the models could effectively leverage all available information and handle heterogeneous feature types.
@@ -23,14 +23,14 @@ We split the dataset into an 80\% training set and a 20\% test set, ensuring a c
 
 We evaluated models using two standard regression metrics:
 \begin{itemize}
-    \item \textbf{Root Mean Squared Error (RMSE)} – Emphasizes large errors, useful for detecting problematic predictions.
-    \item \textbf{Mean Absolute Error (MAE)} – Measures average prediction error in the original rating scale, making it more interpretable.
+  \item \textbf{Root Mean Squared Error (RMSE)} --- Emphasizes large errors, useful for detecting problematic predictions.
+  \item \textbf{Mean Absolute Error (MAE)} --- Measures average prediction error in the original rating scale, making it more interpretable.
 \end{itemize}
 
 \subsection{Build model }
 Model training was optimized using cross-validation and grid search to explore hyperparameters and reduce overfitting. This ensured that the final models were not just fitted to training data but generalized well to new inputs.
 
-\textbf{Model behavior:}  
+\textbf{Model behavior:}
 Random Forest effectively captured non-linear relationships, especially between location, property characteristics, and host quality. Linear Regression, though limited in expressive power, served as a lightweight and interpretable baseline.
 
 \subsection{Assess model }
@@ -38,64 +38,60 @@ Random Forest effectively captured non-linear relationships, especially between 
 Based on the results of the cross validation, we decided to choose the RF model as the main one. Below is a table of models and their results.
 
 \begin{table}[ht!]
-\small
-\centering
-\caption{Grid Search Results For Random Forest Regressor (RMSE)}
-\label{tab:grid_search_rf_rmse}
-\begin{tabular}{lll} 
-\toprule
-  & \textbf{Max Depth 5} & \textbf{Max Depth 10} \\
-\midrule
-\textbf{5 Trees} & 9.12 & 8.43 \\
-\textbf{10 Trees} &  9.16 & \textbf{8.4} \\
-\bottomrule
-\end{tabular}
+  \small
+  \centering
+  \caption{Grid Search Results For Random Forest Regressor (RMSE)}\label{tab:grid_search_rf_rmse}
+  \begin{tabular}{lll}
+    \toprule
+                      & \textbf{Max Depth 5} & \textbf{Max Depth 10} \\
+    \midrule
+    \textbf{5 Trees}  & 9.12                 & 8.43                  \\
+    \textbf{10 Trees} & 9.16                 & \textbf{8.4}          \\
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 \begin{table}[ht!]
-\small
-\centering
-\caption{Grid Search Results For Random Forest Regressor (MAE)}
-\label{tab:grid_search_rf_mae}
-\begin{tabular}{lll} 
-\toprule
-  & \textbf{Max Depth 5} & \textbf{Max Depth 10} \\
-\midrule
-\textbf{5 Trees} & 5.7 & 5.35 \\
-\textbf{10 Trees} &  5.74 & 5.32 \\
-\bottomrule
-\end{tabular}
+  \small
+  \centering
+  \caption{Grid Search Results For Random Forest Regressor (MAE)}\label{tab:grid_search_rf_mae}
+  \begin{tabular}{lll}
+    \toprule
+                      & \textbf{Max Depth 5} & \textbf{Max Depth 10} \\
+    \midrule
+    \textbf{5 Trees}  & 5.7                  & 5.35                  \\
+    \textbf{10 Trees} & 5.74                 & 5.32                  \\
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 \begin{table}[ht!]
-\small
-\centering
-\caption{Grid Search Results For Linear Regressor (RMSE)\\ Where $\lambda$-Elastic Net Parameter and $\beta$-Reg Parameter }
-\label{tab:grid_search_lr_rmse}
-\begin{tabular}{llll} 
-\toprule
-  & \textbf{$\lambda$= 0.0} & \textbf{$\lambda$=  0.5} & \textbf{$\lambda$=  1.0} \\
-\midrule
-\textbf{$\beta$= 0.01} & 9.13 & \textbf{9.0} & 9.12 \\
-\textbf{$\beta$= 0.1} &  9.07 & 9.05 & 9.15 \\
-\textbf{$\beta$= 1.0} &  9.02 & 9.28 & 9.32 \\
-\bottomrule
-\end{tabular}
+  \small
+  \centering
+  \caption{Grid Search Results For Linear Regressor (RMSE)\\ Where $\lambda$-Elastic Net Parameter and $\beta$-Reg Parameter }\label{tab:grid_search_lr_rmse}
+  \begin{tabular}{llll}
+    \toprule
+                           & \textbf{$\lambda$= 0.0} & \textbf{$\lambda$=  0.5} & \textbf{$\lambda$=  1.0} \\
+    \midrule
+    \textbf{$\beta$= 0.01} & 9.13                    & \textbf{9.0}             & 9.12                     \\
+    \textbf{$\beta$= 0.1}  & 9.07                    & 9.05                     & 9.15                     \\
+    \textbf{$\beta$= 1.0}  & 9.02                    & 9.28                     & 9.32                     \\
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 \begin{table}[ht!]
-\small
-\centering
-\caption{Grid Search Results For Linear Regressor (MAE)\\ Where $\lambda$-Elastic Net Parameter and $\beta$-Reg Parameter}
-\label{tab:grid_search_lr_mae}
-\begin{tabular}{llll} 
-\toprule
-  & \textbf{$\lambda$= 0.0} & \textbf{$\lambda$=  0.5} & \textbf{$\lambda$=  1.0} \\
-\midrule
-\textbf{$\beta$= 0.01} & 5.64 & 5.64 & 5.66 \\
-\textbf{$\beta$= 0.1} &  5.62 & 5.69 & 5.7 \\
-\textbf{$\beta$= 1.0} &  5.65 & 5.85 & 5.95 \\
-\bottomrule
-\end{tabular}
+  \small
+  \centering
+  \caption{Grid Search Results For Linear Regressor (MAE)\\ Where $\lambda$-Elastic Net Parameter and $\beta$-Reg Parameter}\label{tab:grid_search_lr_mae}
+  \begin{tabular}{llll}
+    \toprule
+                           & \textbf{$\lambda$= 0.0} & \textbf{$\lambda$=  0.5} & \textbf{$\lambda$=  1.0} \\
+    \midrule
+    \textbf{$\beta$= 0.01} & 5.64                    & 5.64                     & 5.66                     \\
+    \textbf{$\beta$= 0.1}  & 5.62                    & 5.69                     & 5.7                      \\
+    \textbf{$\beta$= 1.0}  & 5.65                    & 5.85                     & 5.95                     \\
+    \bottomrule
+  \end{tabular}
 \end{table}
 

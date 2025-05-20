@@ -8,7 +8,7 @@ If your paper includes appendices, they are to be placed at the very end of your
 \todo[inline]{This chapter is included solely as a help and reference for using \LaTeX. It should not appear in the final document.}
 
 \subsection{Introduction}
-This chapter shows examples of using \LaTeX for common operations. 
+This chapter shows examples of using \LaTeX for common operations.
 
 \subsection{Styles}
 \label{sec:styles}
@@ -18,19 +18,19 @@ Styles such as \textbf{bold}, \textit{italic}, and \underline{underline} can be 
 With itemize you can create unnumbered lists:
 
 \begin{itemize}
-     \item strawberries
-     \item Peaches
-     \item Pineapples
-     \item Nectarines
+  \item strawberries
+  \item Peaches
+  \item Pineapples
+  \item Nectarines
 \end{itemize}
 
 Similarly, enumerate allows you to create numbered lists:
 
 \begin{enumerate}
-     \item Prepare the memory of the TFG
-     \item Prepare the presentation
-     \item Present the TFG
-     \item Apply for the Bachelor's degree
+  \item Prepare the memory of the TFG
+  \item Prepare the presentation
+  \item Present the TFG
+  \item Apply for the Bachelor's degree
 \end{enumerate}
 
 \subsection{Subsections}
@@ -46,10 +46,10 @@ This is another subsection.
 All images and figures in the document will be placed in the ``fig'' folder. They can be included as follows:
 
 \begin{figure}[htp]
-    \centering
-    \includegraphics[width=0.7\textwidth]{images/skovde.jpg}
-    \caption{An example of image}
-    \label{fig:example}
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/skovde.jpg}
+  \caption{An example of image}
+  \label{fig:example}
 \end{figure}
 
 Note that the figures are automatically numbered according to the chapter and the number of figures that have previously appeared in that chapter. There are many ways to define the size of a figure, but it is advisable to use the one shown in this example: the width of the figure is defined as a percentage of the total width of the page, and the height is automatically scaled. In this way, the maximum width of a figure would be 1.0 * textwidth, which would ensure that it is displayed at the maximum possible size without exceeding the margins of the document.
@@ -111,12 +111,12 @@ LaTeX has a powerful engine for displaying mathematical equations and an extensi
 More complex equations can be expressed separately and are numbered: equation \ref{eq:equation}.
 
 \begin{equation}\label{eq:equation}
-\lim_{x\to 0}{\frac{e^x-1}{2x}}
- \overset{\left[\frac{0}{0}\right]}{\underset{\mathrm{H}}{=}}
- \lim_{x\to 0}{\frac{e^x}{2}}={\frac{1}{2}}
- +7 \int_0^2
+  \lim_{x\to 0}{\frac{e^x-1}{2x}}
+  \overset{\left[\frac{0}{0}\right]}{\underset{\mathrm{H}}{=}}
+  \lim_{x\to 0}{\frac{e^x}{2}}={\frac{1}{2}}
+  +7 \int_0^2
   \left(
-    -\frac{1}{4}\left(e^{-4t_1}+e^{4t_1-8}\right)
+  -\frac{1}{4}\left(e^{-4t_1}+e^{4t_1-8}\right)
   \right)\,dt_1
 \end{equation}
 
@@ -126,11 +126,11 @@ There is \href{http://www.yann-ollivier.org/latex/texsymbols.pdf}{here} an exten
 Some characters and symbols must be escaped in order to be rendered in the document, as they have a special meaning in LaTeX. Some of them are:
 
 \begin{itemize}
-     \item The dollar sign \$ is used for equations.
-     \item The percentage \% is used for comments in the source code.
-     \item The euro symbol \euro{} often causes problems if typed directly.
-     \item The underscore \_ is used for subscripts in math mode.
-     \item Quotes must be expressed `like this' for single quotes and ``like this'' for double quotes. Spanish quotation marks can be expressed \textquote{like this}.
-     \item The backslash \textbackslash{} is used for LaTeX commands.
-     \item Other symbols that must be escaped include the braces \{ \}, the ampersand \&, the hash \#, and the greater-than \textgreater{} and less-than \textless{} symbols.
+  \item The dollar sign \$ is used for equations.
+  \item The percentage \% is used for comments in the source code.
+  \item The euro symbol \euro{} often causes problems if typed directly.
+  \item The underscore \_ is used for subscripts in math mode.
+  \item Quotes must be expressed `like this' for single quotes and ``like this'' for double quotes. Spanish quotation marks can be expressed \textquote{like this}.
+  \item The backslash \textbackslash{} is used for LaTeX commands.
+  \item Other symbols that must be escaped include the braces \{ \}, the ampersand \&, the hash \#, and the greater-than \textgreater{} and less-than \textless{} symbols.
 \end{itemize}
