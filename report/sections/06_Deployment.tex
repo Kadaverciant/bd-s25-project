@@ -1,0 +1,31 @@
+\section{Deployment}
+\label{chap:deployment}
+
+At this stage, we focus on how the developed models can actually be used in a real-world scenario. The goal is to smoothly integrate the best-performing model — Random Forest Regressor — into the ranking system of a rental aggregator platform. The idea is simple: use what we’ve built to help users see better offers first, especially when no reviews or previous data are available — the so-called cold start situation.
+
+\paragraph{Deployment plan} –
+The deployment is planned as follows:
+
+Export the trained model into a serialized format (e.g., using \texttt{joblib} or \texttt{pickle}) for reuse in a production environment.
+
+Create a lightweight API service (e.g., Flask or FastAPI) that receives a listing’s input data and returns a predicted rating.
+
+Integrate this prediction service into the platform’s backend, so it can run in real-time or batch mode, depending on the traffic and system load.
+
+Periodically retrain the model when more listings and real user feedback become available, to improve its accuracy over time.
+
+This setup is simple enough to maintain, yet flexible if we decide to scale or swap out the model later.
+
+\subsection{Limitations and Challenges }
+\label{sec:limitation}
+
+There were a few things we bumped into along the way:
+
+Cold start still means guessing: Even with a good model, predicting without real user reviews will always have some uncertainty.
+
+Limited compute resources: We couldn't try more advanced models (like neural networks) due to hardware constraints.
+
+Sparse and messy data: Some fields (like amenities) were messy, and it took time to clean and transform them into usable features.
+
+Geographical bias: Since we only worked with listings from Rio, the model might not generalize well to other locations without fine-tuning.
+

@@ -1,0 +1,111 @@
+\section{Business Understanding}
+\label{chap:businessUnderstanding}
+
+The primary business problem for our newly launched rental aggregator in Rio de Janeiro is the \emph{cold start} challenge: with virtually no historical user interactions (reviews, bookings, or engagement metrics) on our platform, we cannot accurately rank or recommend listings, leading to poor user experience and low conversion rates. By leveraging publicly available data from established aggregators in the same market—specifically, Airbnb listings in Rio de Janeiro—we aim to train a predictive model that estimates guest review scores based on listing attributes, host characteristics, price, location, and amenities. Improving the quality of the ranking through predicted scores should drive higher click-through and booking rates, thereby increasing overall transactions and revenue. This approach aligns the technical data mining objective of \emph{rating prediction} with the business objective of \emph{cold start mitigation} and revenue growth \cite{crispdm2000, airbnb_rio_kaggle}.  
+
+\subsection{Current situation assessment}
+\label{sec:currentSituationAssessment}
+
+Today, our platform holds fewer than 100 listings with no guest reviews or booking history. In contrast, incumbent aggregators such as Airbnb and Booking.com maintain thousands of listings in Rio de Janeiro, complete with rich historical data and user feedback. Without any reliable signals, new users see an essentially random order of offers, which leads to dissatisfaction and drop-off. We have access to a CSV export of Airbnb listings (2018–2020) from Kaggle, and a small in-house team poised to ingest, process, and model this information.  
+
+\subsubsection{Inventory of resources}
+\label{sec:inventoryOfResources}
+\begin{itemize}
+  \item \textbf{Human Resources:}  
+    \begin{itemize}
+      \item Data scientists (1 ML engineers, 1 Data Analyst)  
+      \item Data engineers (1 ETL specialist)
+    \end{itemize}
+  \item \textbf{Data:}  
+    \begin{itemize}
+      \item Kaggle dataset “Airbnb Price Prediction in Rio de Janeiro” \cite{airbnb_rio_kaggle}  
+    \end{itemize}
+  \item \textbf{Computing resources:}  
+    \begin{itemize}
+      \item University Cluster (16 vCPUs, 32 GB RAM)
+    \end{itemize}
+  \item \textbf{Software:}  
+    \begin{itemize}
+      \item Python 3.11, PySpark, psycopg2, Beeline
+      \item Hadoop, Sqoop
+      \item Snappy, Parquet
+      \item PostgreSQL, Hive, Superset
+      \item JupyterLab for exploration  
+      \item GitHub for version control  
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Assumptions and constraints}
+\label{sec:AssumptionsConstraints}
+\begin{itemize}
+  \item \textbf{Assumptions:}  
+    \begin{itemize}
+      \item Publicly scraped Airbnb data reflects general guest preferences.  
+      \item Host behaviour and listing attributes on Airbnb are analogous to our platform.  
+    \end{itemize}
+  \item \textbf{Constraints:}  
+    \begin{itemize}
+      \item Limited compute budget—no GPU clusters for now.  
+      \item Dataset size should be at least 200 MB and 300,000 rows.  
+      \item Dataset should include geolocational features (latitude, longitude)
+      \item Only CSV extracts; no live API access to external platforms.  
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Risks and contingencies  
+\label{sec:risksAndContingencies}
+\begin{description}
+  \item[Risk:] Data quality issues (missing values, formatting inconsistencies).  
+    \hfill\textit{Contingency:} Implement robust ETL and imputation strategies; drop only if absolutely necessary.  
+  \item[Risk:] Regulatory changes affecting data usage (GDPR).  
+    \hfill\textit{Contingency:} Engage legal team early; anonymize personal identifiers.  
+\end{description}
+
+\subsubsection{Terminology  
+\label{sec:terminology}
+\begin{description}
+  \item[Cold start:] The situation where no historical user-item interaction data exists \cite{crispdm2000}.  
+  \item[Predictive model:] An algorithm that estimates an outcome variable based on input features.  
+  \item[Amenities:] Listing features (e.g., Wi-Fi, air conditioning).  
+  \item[RMSE / MAE:] Root Mean Squared Error / Mean Absolute Error, metrics for regression quality.  
+\end{description}
+
+\subsubsection{Business Objectives  
+\label{sec:businessObjectives}
+\begin{enumerate}
+  \item \textbf{Primary objective:} Mitigate cold start by accurately predicting review scores for new listings, thereby improving ranking relevance and increasing bookings.  
+  \item \textbf{Related questions:}  
+    \begin{itemize}
+      \item How much do specific amenities influence predicted scores?  
+      \item Does geographic location drive the majority of score variance?  
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Data mining objectives  
+\label{sec:dataMiningObjectives}
+\begin{itemize}
+  \item \textbf{Business goal:} Develop model for listing's review scores predictions.  
+  \item \textbf{Data mining goal:} Develop a regression model to predict a listing’s review score (1–100), using host, listing, price, location, and amenities features.
+\end{itemize}
+
+\subsubsection{Business success criteria  
+\label{sec:businessSuccessCriteria}
+\begin{itemize}
+  \item Develop a model that predicts the rating score well enough.   
+  \item Product team reports “useful insights” on feature importances in quarterly review.
+\end{itemize}
+
+\subsubsection{Data mining success criteria  
+\label{sec:dataMiningSuccessCriteria}
+\begin{itemize}
+  \item Model achieves RMSE $\leq$ 10 on a hold-out set of Airbnb data.  
+  \item Feature importance analysis is reproducible and interpretable by non-technical stakeholders.
+\end{itemize}
+
+% In your `references.bib`:
+% @inproceedings{crispdm2000,
+%   author    = {Chapman, P. and Clinton, J. and Kerber, R. and Khabaza, T. and Reinartz, T. and Shearer, C. and Wirth, R.},
+%   title     = {CRISP-DM 1.0: Step-by-step data mining guide},
+%   year      = {2000},
+%   note      = {http://www.crisp-dm.org}
+% }
