@@ -6,7 +6,7 @@ This stage of the CRISP-DM process focuses on initial data analysis to understan
 \subsection{Initial data collection }\label{sec:initialDataCollection}
 For our analysis, we utilized historical data from an existing rental and hotel aggregator platform. The dataset spans several years and covers multiple seasonal periods. It includes both information about rental listings and their respective hosts.
 
-The main data sources was CSV file with rental offer information exported from the aggregator (covering three years (2018--2020)). The dataset is available on \href{https://www.kaggle.com/datasets/hazujaf/airbnb-price-prediction-in-rio-de-janeiro-python?resource=download}{Kaggle}\cite{airbnb_rio_kaggle}, which originally compiled publicly available information from the Airbnb website for Rio de Janeiro.
+The main data sources was CSV file with rental offer information exported from the aggregator (covering three years (2018--2020)). The dataset is available on \href{https://www.kaggle.com/datasets/hazujaf/airbnb-price-prediction-in-rio-de-janeiro-python?resource=download}{Kaggle}~\cite{airbnb_rio_kaggle}, which originally compiled publicly available information from the Airbnb website for Rio de Janeiro.
 
 \subsection{Data Description }\label{sec:dataDescription}
 Our data contains about 784K records and 108 different attributes. The entire dataset weighs about 2.5 GB.
@@ -23,39 +23,26 @@ It is the review score rating that we want to learn how to predict in order to s
 
 Overall, the structure and coverage of the data arc aligned with the project's goals, though some preprocessing and cleaning steps are necessary.
 
-\subsection{Data Exploration\textit{[Core]}}\label{sec:dataExploration}
+\subsection{Data Exploration}\label{sec:dataExploration}
 
 During this stage, we explored key aspects of the dataset through HQL queries and visual analysis. The goal was to identify trends, anomalies, and relationships that could guide future modeling efforts and transformations. Below we present the insights gained from our initial data mining queries.
 
 \subsubsection*{1. Price and Rating Distribution in Popular Neighborhoods}
 
-To understand pricing and quality dynamics across the most active regions, we selected the top 10 most frequently occurring neighborhoods with non-null entries. For these, we extracted corresponding price and review score ratings.
+To understand pricing and quality dynamics across the most active regions, we selected the top 10 most frequently occurring neighborhoods with non-null entries. For these, we extracted corresponding price and review score ratings (\Cref{fig:q1_1,fig:q1_2}).
 
 \vspace{0.5em}
 \paragraph{Key insights}
 \begin{itemize}
     \item Weak Correlation inside neighborhoods: High prices in neighborhoods do not guarantee top reviews in it. Leblon, as most expensive, ranks 7th in mean scores, while Flamengo which is cheaper, scores 4th highest in ratings.
     \item High-Value Opportunities: Flamengo and Laranjeiras combine low prices with top-tier scores, so can be considered as best neighborhoods to budget-conscious travelers.
-    \item Price-Score Variability: large gaps between mean and median in prices suggest existence of small number of `luxury' offers, while gaps in scores - that there are small number of offers with small ratings
+    \item Price-Score Variability: large gaps between mean and median in prices suggest existence of small number of `luxury' offers, while gaps in scores --- that there are small number of offers with small ratings
 \end{itemize}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q1_1.jpg}
-    \caption{Price distribution over 10 most popular neighborhoods}\label{fig:figureq1}
-\end{figure}
-
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q1_2.jpg}
-    \caption{Score distribution over 10 most popular neighborhoods}\label{fig:figureq2}
-\end{figure}
 
 \subsubsection*{2. Relationship Between Night Limits, Pricing Buckets, and Ratings }
 
-This section explores how booking restrictions (minimum/maximum nights), pricing tiers, and cancellation policies relate to review scores. Prices were bucketed into five meaningful intervals for better interpretability.
+This section explores how booking restrictions (minimum/maximum nights), pricing tiers, and cancellation policies relate to review scores. Prices were bucketed into five meaningful intervals for better interpretability (\Cref{fig:q2_1,fig:q2_2}).
 
 \vspace{0.5em}
 \paragraph{Key insights}
@@ -67,23 +54,11 @@ This section explores how booking restrictions (minimum/maximum nights), pricing
     \item Review Score with a Stay Length: another clear trend is that as the stay length of the listing increases, mean review score also increases. Also, there is a noticeable `phase transition' between 100--499\$ and 500--999\$ clusters: mean review score has here drastic increase.
 \end{itemize}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q2_1.jpg}
-    \caption{Score distribution over cancellation policy for different prices}\label{fig:figureq3}
-\end{figure}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q2_2.jpg}
-    \caption{Score distribution over booking nights and prices}\label{fig:figureq4}
-\end{figure}
 
 \subsubsection*{3. Host Verification Features and Their Impact}
 
-Here we examine how different host verification combinations affect guest ratings and pricing. Hosts were grouped into categories based on features like profile picture, identity verification, and superhost status.
+Here we examine how different host verification combinations affect guest ratings and pricing. Hosts were grouped into categories based on features like profile picture, identity verification, and superhost status (\Cref{fig:q3_1}).
 
 \vspace{0.5em}
 \paragraph{Key insights}
@@ -94,12 +69,6 @@ Here we examine how different host verification combinations affect guest rating
     \item Interestingly, fully\_featured hosts (with all three attributes) do not significantly outperform hosts with just a picture or superhost status
 \end{itemize}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q3_1.jpg}
-    \caption{Score distribution over host characteristics}\label{fig:figureq4}
-\end{figure}
 \subsubsection*{Overall Findings and Impact}
 
 These initial analyses provided several useful directions:
@@ -117,7 +86,7 @@ This query focuses on the top 10 property types and their associated room types.
     \item Among the most common property-room type pairs
 \end{itemize}
 
-Additionally, we construct a descriptive label combining room type and property type for intuitive grouping.
+Additionally, we construct a descriptive label combining room type and property type for intuitive grouping (\Cref{fig:q4_1,fig:q4_2,fig:q4_3,fig:q4_4}).
 
 \vspace{0.5em}
 \paragraph{Key insights}
@@ -130,38 +99,10 @@ Additionally, we construct a descriptive label combining room type and property 
 
 \end{itemize}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q4_1.jpg}
-    \caption{Score distribution over months and 10 most popular property types}\label{fig:figureq5}
-\end{figure}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q4_2.jpg}
-    \caption{Score distribution over months and room types}\label{fig:figureq6}
-\end{figure}
+\subsubsection*{5. Host Responsiveness and its Impact on Guest Experience}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q4_3.jpg}
-    \caption{Score distribution over months and 10 most popular booking combinations}\label{fig:figureq7}
-\end{figure}
-
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q4_4.jpg}
-    \caption{Price distribution over months and 10 most popular booking combinations}\label{fig:figureq8}
-\end{figure}
-
-
-\subsubsection*{5. Host Responsiveness and its Impact on Guest Experience }
-
-This analysis investigates how host responsiveness (response time and response rate) relates to guest satisfaction and pricing. Buckets for both price and response rate allow easier pattern recognition.
+This analysis investigates how host responsiveness (response time and response rate) relates to guest satisfaction and pricing. Buckets for both price and response rate allow easier pattern recognition (\Cref{fig:q5_1,fig:q5_2}).
 
 \vspace{0.5em}
 \paragraph{Key insights}
@@ -171,21 +112,6 @@ This analysis investigates how host responsiveness (response time and response r
     \item Higher Response Rate Mean Higher Scores: This shows a quite strong and consistent positive correlation. The more consistently a host responds, the higher their review scores, almost regardless of the listing's price.
 \end{itemize}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q5_1.jpg}
-    \caption{Score distribution over host response time}\label{fig:figureq9}
-\end{figure}
-
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q5_2.jpg}
-    \caption{Score distribution over host response rate}\label{fig:figureq10}
-\end{figure}
-
-
 \subsubsection*{6. Geospatial Distribution of High-Value and Highly-Rated Neighborhoods}
 
 In this query, we geolocate listings and mark those belonging to:
@@ -194,7 +120,7 @@ In this query, we geolocate listings and mark those belonging to:
     \item Overlap of Top Price and Top Score Neighborhoods: the overlap exists but is not strong. Most overlapping occurs in central regions of Rio de Janeiro, where both review scores and prices are high. The south-west part of the city is high-priced and (relatively) low-scoring, whilenorth past is, vice versa, low-priced but very high-scoring. So the key finding is that central neighborhoods `hidden-gems', so should have higher rating.
 \end{itemize}
 
-This is useful for mapping `premium' vs `well-rated' areas.
+This is useful for mapping `premium' vs `well-rated' areas (\Cref{fig:q6_1,fig:q6_2,fig:q6_3,fig:q6_4}).
 
 \vspace{0.5em}
 \paragraph{Key insights}
@@ -203,37 +129,10 @@ This is useful for mapping `premium' vs `well-rated' areas.
     \item Opportunity to identify luxury vs customer-favorite locations.
 \end{itemize}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q6_1.jpg}
-    \caption{Mean score map}\label{fig:figureq11}
-\end{figure}
-
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q6_2.jpg}
-    \caption{Mean price map}\label{fig:figureq12}
-\end{figure}
-
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q6_3.jpg}
-    \caption{Top neighborhoods by mean price}\label{fig:figureq13}
-\end{figure}
-
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{images/q6_4.jpg}
-    \caption{Top neighborhoods by mean score}\label{fig:figureq14}
-\end{figure}
 
 \subsubsection*{7. Amenity Combinations and Their Influence on Price and Ratings}
 
-This final analysis categorizes listings based on presence of key amenities: Wi-Fi, air conditioning, hot water, and refrigerator. We assess how different combinations affect price and satisfaction.
+This final analysis categorizes listings based on presence of key amenities: Wi-Fi, air conditioning, hot water, and refrigerator. We assess how different combinations affect price and satisfaction (\Cref{fig:q7_1}).
 
 \vspace{0.5em}
 \paragraph{Key insights}
@@ -244,13 +143,7 @@ This final analysis categorizes listings based on presence of key amenities: Wi-
     \item Seasonal Impact: There are minor monthly fluctuations for most combinations, but the overall ranking of amenity packages by score remains largely the same throughout the year. For example, the need for AC might be perceived as slightly less critical in cooler months, but listings with wifi\_ac still outperform those with just wifi\_only.
 \end{itemize}
 
-\vspace{1em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/q7_1.jpg}
-    \caption{Score distribution over amenities and months}\label{fig:figureq15}
-\end{figure}
-
+\subsection{Summary of Data Exploration}\label{sec:dataExplorationSummary}
 
 Further transformations and detailed exploration will build on these findings to enhance data quality and modeling performance.
 
