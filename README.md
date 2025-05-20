@@ -73,6 +73,10 @@ bash scripts/main.sh
 │   ├── q1_*.jpg to q7_*.jpg       # Insight plots
 │   └── q1.csv to q7.csv           # Insight results
 │
+├── report/
+│   ├── report.tex
+│   └── report.pdf                  # Project report in PDF format
+│
 ├── scripts/
 │   ├── app.py                     # Model pipeline
 │   ├── build_data.py              # Script to preprocess or construct data

@@ -1,0 +1,73 @@
+\section{Data Preparation}
+\label{chap:dataPreparation}
+This phase of the CRISP-DM process is focused on refining and shaping the data to ensure it is suitable for analysis. At this point, we identify which parts of the dataset will be utilized, taking into account factors such as relevance to the analytical goals, data quality, and potential technical limitations including data size and format. Data preparation plays a critical role in the success of the overall modeling process, and decisions made here directly influence the accuracy and robustness of the final results.
+
+\subsection{Data selection } 
+\label{sec:dataSelection}
+The original dataset consists of 108 columns, which contain a wide range of information. However, not all features are equally relevant or useful for our specific task — predicting the rating of rental listings. Therefore, we conducted a feature selection process and chose a subset of variables that are most informative for the prediction task, based on both domain knowledge and preliminary exploration.
+
+The selected features are as follows:
+
+\begin{enumerate}
+    \item \texttt{host\_since} – the date when the host started renting properties on the platform
+    \item \texttt{host\_response\_time} – average response speed of the host to inquiries
+    \item \texttt{host\_response\_rate} – the percentage of inquiries the host responded to
+    \item \texttt{host\_is\_superhost} – indicates whether the host has superhost status
+    \item \texttt{host\_has\_profile\_pic} – whether the host has uploaded a profile picture
+    \item \texttt{host\_identity\_verified} – whether the host has verified their identity
+    \item \texttt{neighbourhood} – the district in which the property is located
+    \item \texttt{latitude} - latitude for rent apartment 
+    \item \texttt{longitude} – longitude for rent apartment
+    \item \texttt{property\_type} – the general type of the rental property
+    \item \texttt{room\_type} – classification of the room offered for rent
+    \item \texttt{accommodates} – how many guests the listing can accommodate
+    \item \texttt{bathrooms} - number of bathrooms in rent apartment
+    \item \texttt{bedrooms} - number of bedrooms in rent apartment
+    \item \texttt{beds} - number of beds in rent apartment
+    \item \texttt{bed\_type} – type of bed(s) provided
+    \item \texttt{amenities} – list of additional features and services offered
+    \item \texttt{price} – nightly rental price
+    \item \texttt{security\_deposit} – the deposit required by the host
+    \item \texttt{cleaning\_fee} – cleaning fee charged by the host
+    \item \texttt{guests\_included} – number of guests included in the base price
+    \item \texttt{extra\_people} – additional cost per extra guest
+    \item \texttt{minimum\_nights} - maximum rental duration
+    \item \texttt{maximum\_nights} – minimum rental duration
+    \item \texttt{review\_scores\_rating} – aggregated review rating (our target variable)
+    \item \texttt{instant\_bookable} – whether the property can be instantly booked
+    \item \texttt{cancellation\_policy} – cancellation terms specified by the host
+    \item \texttt{require\_guest\_profile\_picture} – whether the host requires guests to have a profile picture
+    \item \texttt{month} – the month in which the data was recorded (used for seasonal adjustment)
+\end{enumerate}
+
+These features were selected based on their potential impact on the guest experience and their assumed correlation with the listing's rating. The selected subset balances granularity and generality while reducing noise from redundant or irrelevant columns.
+
+\subsection{Data cleaning }
+\label{sec:dataCleaning}
+To preserve as much valuable data as possible, we applied targeted imputation strategies for handling missing values. Our approach included the following treatments:
+
+\begin{itemize}
+    \item \texttt{host\_response\_time} – replaced with "unknown"
+    \item \texttt{host\_response\_rate} – set to 0
+    \item \texttt{security\_deposit}, \texttt{cleaning\_fee} – imputed with 0
+    \item \texttt{amenities} – missing values replaced with an empty string
+\end{itemize}
+
+For columns where missing values were less frequent and could significantly affect data integrity (e.g., \texttt{bedrooms}, \texttt{price}), we chose to drop those rows entirely. After cleaning, the dataset was reduced to approximately 379,600 records, which still offers a robust sample for modeling.
+
+In addition to imputation, several formatting adjustments were made:
+\begin{itemize}
+    \item Monetary columns such as \texttt{price}, \texttt{security\_deposit}, \texttt{cleaning\_fee}, and \texttt{extra\_people} were stripped of currency symbols to enable numerical operations.
+    \item The \texttt{amenities} column was cleaned of extraneous curly braces and quotation marks for easier parsing and analysis.
+\end{itemize}
+
+These steps ensure consistency across records and prepare the data for efficient feature extraction and model input.
+
+\subsection{Data construction}
+\label{sec:dataConstruction}
+This phase focuses on the generation of new attributes derived from existing ones, with the aim of enriching the dataset and improving the performance of downstream models.
+
+\textbf{Derived attributes:}  
+The \texttt{amenities} field originally contained over 180 unique entries in a single textual column, representing various features of each listing. To extract more actionable information, we analyzed the frequency of occurrence of these amenities and selected the 20 most common ones. Each selected amenity was transformed into a separate binary feature indicating its presence or absence in a given listing.
+
+This transformation enabled the model to better capture the impact of amenities on listing ratings and allowed for more interpretable feature importance in later stages of the project.

@@ -1,0 +1,39 @@
+\section{Evaluation }
+\label{chap:evaluation}
+Evaluation on the test set revealed clear differences in model performance:
+
+\begin{itemize}
+    \item \textbf{Random Forest} achieved a lower MAE of approximately 8 points, showing it could reliably estimate listing ratings without prior review data.
+    \item \textbf{Linear Regression} underperformed on listings with extreme or high scores, highlighting its limitations in modeling complex patterns.
+\end{itemize}
+
+\textbf{Interpretability:}  
+Despite being more complex, the Random Forest model still allowed us to extract feature importances, which provided actionable insights.
+
+\textbf{Model ranking:}  
+Based on performance and utility, the Random Forest Regressor was chosen as the preferred model. It delivers accurate predictions while maintaining enough interpretability for business analysis and decision-making.
+
+\textbf{Future directions:}  
+Although current resource constraints prevented us from testing more computationally intensive models (like Polynomial Regression or Deep Neural Networks), this foundation offers several promising paths:
+\begin{itemize}
+    \item Exploring time-based features (e.g., seasonal patterns)
+    \item Using embedding techniques for high-cardinality categorical variables
+    \item Scaling model training with GPU acceleration
+\end{itemize}
+
+In its current state, the model is both effective and production-ready, offering a scalable solution to the cold start problem while leaving room for future refinement.
+
+\begin{table}[ht!]
+\small
+\centering
+\caption{Comparison of models}
+\label{tab:model_comparison}
+\begin{tabular}{lll} 
+\toprule
+Model & {RMSE} & {MAE} \\
+\midrule
+\textbf{Linear Regression} & 9.06 & 5.68 \\
+\textbf{Random Forest Regressor} &  8.28 & 5.34 \\
+\bottomrule
+\end{tabular}
+\end{table}
