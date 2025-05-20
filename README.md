@@ -74,6 +74,7 @@ bash scripts/main.sh
 │   └── q1.csv to q7.csv           # Insight results
 │
 ├── report/
+│   ├── presentation.pdf            # Presentation in PDF format
 │   ├── report.tex
 │   └── report.pdf                  # Project report in PDF format
 │
